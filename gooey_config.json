@@ -1,0 +1,428 @@
+{
+  "language": "portuguese",
+  "target": "\"C:\\Users\\Pedro Milreu Cunha\\Desktop\\Projeto - Turismo - LABIMEC\\NOVO CAGED\\venv\\Scripts\\python.exe\" -u \"C:/Users/Pedro Milreu Cunha/Desktop/Projeto - Turismo - LABIMEC/NOVO CAGED/caged_labimec.py\"",
+  "suppress_gooey_flag": false,
+  "program_name": "Utilit\u00e1rio para extra\u00e7\u00e3o, leitura e tratamento de microdados do NOVO CAGED sobre turismo - LABIMEC",
+  "program_description": "Programa utilizado para baixar, extrair e analisar (em rela\u00e7\u00e3o ao turismo) os microdados do NOVO CAGED\ndispon\u00edveis no servidor FTP do Minist\u00e9rio do Trabalho.",
+  "sidebar_title": "Actions",
+  "default_size": [
+    1024,
+    800
+  ],
+  "auto_start": false,
+  "show_advanced": true,
+  "run_validators": true,
+  "encoding": "utf-8",
+  "show_stop_warning": true,
+  "show_success_modal": true,
+  "show_failure_modal": true,
+  "force_stop_is_error": true,
+  "poll_external_updates": false,
+  "return_to_config": false,
+  "show_restart_button": false,
+  "requires_shell": true,
+  "menu": [
+    {
+      "name": "Informa\u00e7\u00f5es",
+      "items": [
+        {
+          "type": "AboutDialog",
+          "menuTitle": "Sobre",
+          "name": "Utilit\u00e1rio para extra\u00e7\u00e3o, leitura e tratamento de microdados do NOVO CAGED sobre turismo - LABIMEC",
+          "description": "Um programa simples que serve para baixar, extrair e analisar os microdados do NOVO CAGED (2020 em diante) utilizando conex\u00f5es FTP e o m\u00f3dulo Gooey para desenvolver a GUI.",
+          "version": "1.0",
+          "copyright": "2022",
+          "website": "https://www.ufpb.br/labimec\nhttps://github.com/PedroMilreuCunha",
+          "developer": "Pedro Milreu Cunha - Doutorando e Mestre em Economia Aplicada pelo PPGE/UFPB e \nBacharel em Ci\u00eancias Econ\u00f4micas pela UFV",
+          "license": "Gratuito para uso pessoal."
+        },
+        {
+          "type": "MessageDialog",
+          "menuTitle": "Informa\u00e7\u00e3o",
+          "caption": "Feedback",
+          "message": "Para quaisquer d\u00favidas, sugest\u00f5es, cr\u00edticas ou elogios entrar em contato com o desenvolvedor atrav\u00e9s do e-mail pcunha.2107@gmail.com."
+        }
+      ]
+    }
+  ],
+  "clear_before_run": false,
+  "fullscreen": false,
+  "use_legacy_titles": true,
+  "num_required_cols": 2,
+  "num_optional_cols": 2,
+  "manual_start": false,
+  "monospace_display": false,
+  "image_dir": "figs",
+  "language_dir": "lang",
+  "progress_regex": null,
+  "progress_expr": null,
+  "hide_progress_msg": false,
+  "timing_options": {
+    "show_time_remaining": true,
+    "hide_time_remaining_on_complete": true
+  },
+  "disable_progress_bar_animation": false,
+  "disable_stop_button": false,
+  "navigation": "SIDEBAR",
+  "show_sidebar": false,
+  "tabbed_groups": false,
+  "group_by_type": true,
+  "body_bg_color": "#f0f0f0",
+  "header_bg_color": "#ffffff",
+  "header_height": 80,
+  "header_show_title": true,
+  "header_show_subtitle": true,
+  "header_image_center": false,
+  "footer_bg_color": "#f0f0f0",
+  "sidebar_bg_color": "#f2f2f2",
+  "terminal_panel_color": "#F0F0F0",
+  "terminal_font_color": "#000000",
+  "terminal_font_family": null,
+  "terminal_font_weight": 400,
+  "terminal_font_size": null,
+  "richtext_controls": false,
+  "error_color": "#ea7878",
+  "layout": "standard",
+  "widgets": {
+    "caged_labimec.py": {
+      "command": "::gooey/default",
+      "name": "caged_labimec.py",
+      "help": null,
+      "description": "",
+      "contents": [
+        {
+          "name": "Download e extra\u00e7\u00e3o dos dados",
+          "items": [
+            {
+              "id": "Escolher",
+              "type": "Dropdown",
+              "cli_type": "positional",
+              "required": true,
+              "data": {
+                "display_name": "Escolher",
+                "help": "Os microdados do NOVO CAGED dispon\u00edveis at\u00e9 a data atual podem ser vistos e escolhidos utilizando a caixa de sele\u00e7\u00e3o.",
+                "required": true,
+                "nargs": "",
+                "commands": [],
+                "choices": [
+                  "Janeiro-2020",
+                  "Fevereiro-2020",
+                  "Mar\u00e7o-2020",
+                  "Abril-2020",
+                  "Maio-2020",
+                  "Junho-2020",
+                  "Julho-2020",
+                  "Agosto-2020",
+                  "Setembro-2020",
+                  "Outubro-2020",
+                  "Novembro-2020",
+                  "Dezembro-2020",
+                  "Janeiro-2021",
+                  "Fevereiro-2021",
+                  "Mar\u00e7o-2021",
+                  "Abril-2021",
+                  "Maio-2021",
+                  "Junho-2021",
+                  "Julho-2021",
+                  "Agosto-2021",
+                  "Setembro-2021",
+                  "Outubro-2021",
+                  "Novembro-2021",
+                  "Dezembro-2021",
+                  "Janeiro-2022",
+                  "Fevereiro-2022",
+                  "Mar\u00e7o-2022",
+                  "Abril-2022",
+                  "Maio-2022",
+                  "Junho-2022",
+                  "Julho-2022",
+                  "Agosto-2022",
+                  "Setembro-2022"
+                ],
+                "default": "Janeiro-2020",
+                "dest": "Escolher"
+              },
+              "options": {
+                "error_color": "#ea7878",
+                "label_color": "#000000",
+                "help_color": "#363636",
+                "full_width": false,
+                "validator": {
+                  "type": "ExpressionValidator",
+                  "test": "user_input",
+                  "message": "This field is required"
+                },
+                "external_validator": {
+                  "cmd": ""
+                }
+              }
+            },
+            {
+              "id": "Salvar",
+              "type": "DirChooser",
+              "cli_type": "positional",
+              "required": true,
+              "data": {
+                "display_name": "Salvar",
+                "help": "Utilize esse campo para selecionar a pasta de grava\u00e7\u00e3o do arquivo final com os microdados extra\u00eddos em .txt.",
+                "required": true,
+                "nargs": "",
+                "commands": [],
+                "choices": [],
+                "default": null,
+                "dest": "Salvar"
+              },
+              "options": {
+                "error_color": "#ea7878",
+                "label_color": "#000000",
+                "help_color": "#363636",
+                "full_width": false,
+                "validator": {
+                  "type": "ExpressionValidator",
+                  "test": "user_input and not user_input.isspace()",
+                  "message": "This field is required"
+                },
+                "external_validator": {
+                  "cmd": ""
+                }
+              }
+            }
+          ],
+          "groups": [],
+          "description": "Utilize esses campos para escolher o arquivo desejado do servidor FTP e a pasta onde deseja salv\u00e1-lo.",
+          "options": {
+            "label_color": "#000000",
+            "description_color": "#363636",
+            "legacy": {
+              "required_cols": 2,
+              "optional_cols": 2
+            },
+            "columns": 2,
+            "padding": 10,
+            "show_border": false
+          }
+        },
+        {
+          "name": "Transforma\u00e7\u00e3o dos dados",
+          "items": [
+            {
+              "id": "Transformar",
+              "type": "Dropdown",
+              "cli_type": "positional",
+              "required": true,
+              "data": {
+                "display_name": "Transformar",
+                "help": "Marque essa op\u00e7\u00e3o caso deseje que os dados sejam trabalhados, organizados e agregados por escolaridade,munic\u00edpio, ra\u00e7a/cor e sexo.",
+                "required": true,
+                "nargs": "",
+                "commands": [],
+                "choices": [
+                  "Sim",
+                  "N\u00e3o"
+                ],
+                "default": "Sim",
+                "dest": "Transformar"
+              },
+              "options": {
+                "error_color": "#ea7878",
+                "label_color": "#000000",
+                "help_color": "#363636",
+                "full_width": false,
+                "validator": {
+                  "type": "ExpressionValidator",
+                  "test": "user_input",
+                  "message": "This field is required"
+                },
+                "external_validator": {
+                  "cmd": ""
+                }
+              }
+            },
+            {
+              "id": "Turismo",
+              "type": "Dropdown",
+              "cli_type": "positional",
+              "required": true,
+              "data": {
+                "display_name": "Turismo",
+                "help": "Marque essa op\u00e7\u00e3o caso deseje que os dados trabalhados fa\u00e7am refer\u00eancia apenas \u00e0s categoria do turismo e ao munic\u00edpio de Jo\u00e3o Pessoa.",
+                "required": true,
+                "nargs": "",
+                "commands": [],
+                "choices": [
+                  "Sim",
+                  "N\u00e3o"
+                ],
+                "default": "N\u00e3o",
+                "dest": "Turismo"
+              },
+              "options": {
+                "error_color": "#ea7878",
+                "label_color": "#000000",
+                "help_color": "#363636",
+                "full_width": false,
+                "validator": {
+                  "type": "ExpressionValidator",
+                  "test": "user_input",
+                  "message": "This field is required"
+                },
+                "external_validator": {
+                  "cmd": ""
+                }
+              }
+            }
+          ],
+          "groups": [],
+          "description": "Utilize essa se\u00e7\u00e3o para marcar se deseja realizar uma limpeza e agrega\u00e7\u00e3o dos dados e, tamb\u00e9m,se deve ser feita uma an\u00e1lise especificamente para o setor de turismo de Jo\u00e3o Pessoa.",
+          "options": {
+            "label_color": "#000000",
+            "description_color": "#363636",
+            "legacy": {
+              "required_cols": 2,
+              "optional_cols": 2
+            },
+            "columns": 2,
+            "padding": 10,
+            "show_border": false
+          }
+        },
+        {
+          "name": "Visualiza\u00e7\u00e3o dos dados",
+          "items": [
+            {
+              "id": "Plotar",
+              "type": "Dropdown",
+              "cli_type": "positional",
+              "required": true,
+              "data": {
+                "display_name": "Plotar",
+                "help": "Marque essa op\u00e7\u00e3o caso deseje que gr\u00e1ficos sintetizando os resultados (turismo) sejam criados.",
+                "required": true,
+                "nargs": "",
+                "commands": [],
+                "choices": [
+                  "Sim",
+                  "N\u00e3o"
+                ],
+                "default": "N\u00e3o",
+                "dest": "Plotar"
+              },
+              "options": {
+                "error_color": "#ea7878",
+                "label_color": "#000000",
+                "help_color": "#363636",
+                "full_width": false,
+                "validator": {
+                  "type": "ExpressionValidator",
+                  "test": "user_input",
+                  "message": "This field is required"
+                },
+                "external_validator": {
+                  "cmd": ""
+                }
+              }
+            },
+            {
+              "id": "--Exportar",
+              "type": "DirChooser",
+              "cli_type": "optional",
+              "required": false,
+              "data": {
+                "display_name": "Exportar",
+                "help": "Selecione a pasta onde deseja salvar as visualiza\u00e7\u00f5es gr\u00e1ficas dos resultados.",
+                "required": false,
+                "nargs": "",
+                "commands": [
+                  "--Exportar"
+                ],
+                "choices": [],
+                "default": null,
+                "dest": "Exportar"
+              },
+              "options": {
+                "error_color": "#ea7878",
+                "label_color": "#000000",
+                "help_color": "#363636",
+                "full_width": false,
+                "validator": {
+                  "type": "ExpressionValidator",
+                  "test": "True",
+                  "message": ""
+                },
+                "external_validator": {
+                  "cmd": ""
+                }
+              }
+            }
+          ],
+          "groups": [],
+          "description": "\t\t\t\tIMPORTANTE: DISPON\u00cdVEL APENAS PARA OS DADOS DO TURISMO DE JO\u00c3O PESSOA\n\nUtilize essa se\u00e7\u00e3o para escolher se os gr\u00e1ficos-s\u00edntese dos resultados devem ser elaborados e exportados.",
+          "options": {
+            "label_color": "#000000",
+            "description_color": "#363636",
+            "legacy": {
+              "required_cols": 2,
+              "optional_cols": 2
+            },
+            "columns": 2,
+            "padding": 10,
+            "show_border": false
+          }
+        },
+        {
+          "name": "Exclus\u00e3o do arquivo intermedi\u00e1rio em .txt.",
+          "items": [
+            {
+              "id": "--Excluir",
+              "type": "Dropdown",
+              "cli_type": "optional",
+              "required": false,
+              "data": {
+                "display_name": "Excluir",
+                "help": "Marque essa op\u00e7\u00e3o caso deseje que o arquivo intermedi\u00e1rio em .txt seja removido.",
+                "required": false,
+                "nargs": "",
+                "commands": [
+                  "--Excluir"
+                ],
+                "choices": [
+                  "Sim",
+                  "N\u00e3o"
+                ],
+                "default": "Sim",
+                "dest": "Excluir"
+              },
+              "options": {
+                "error_color": "#ea7878",
+                "label_color": "#000000",
+                "help_color": "#363636",
+                "full_width": false,
+                "validator": {
+                  "type": "ExpressionValidator",
+                  "test": "True",
+                  "message": ""
+                },
+                "external_validator": {
+                  "cmd": ""
+                }
+              }
+            }
+          ],
+          "groups": [],
+          "description": "Utilize essa se\u00e7\u00e3o para escolher se o arquivo intermedi\u00e1rio em .txt dos microdados deve ser exclu\u00eddo.",
+          "options": {
+            "label_color": "#000000",
+            "description_color": "#363636",
+            "legacy": {
+              "required_cols": 2,
+              "optional_cols": 2
+            },
+            "columns": 2,
+            "padding": 10,
+            "show_border": false
+          }
+        }
+      ]
+    }
+  }
+}
