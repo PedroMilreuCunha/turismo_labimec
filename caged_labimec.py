@@ -35,7 +35,7 @@ SUBCLASSES_TURISMO = pd.DataFrame(data={"Subclasse":
                                              5111100, 5112901, 5112999,  # Transporte aéreo
                                              7111000,  # Aluguel de transporte
                                              7911200, 7912100,  # Agências de viagem
-                                             7990200,  # Serviços de resereva e n.e.a.
+                                             7990200,  # Serviços de reserva e n.e.a.
                                              9001901, 9001902, 9001903, 9001904, 9001905, 9001999,  # Artês cênicas
                                              9102301,  # Atividades de museus
                                              9200301, 9200302, 9200399,
@@ -252,12 +252,16 @@ def recodificar_dummies(dados_caged: pd.DataFrame, turismo: bool) -> pd.DataFram
     df_recodificado["sexo"] = np.where(df_recodificado["sexo"].values == 9, "Não identificado",
                                        np.where(df_recodificado["sexo"].values == 1, "Homem",
                                                 "Mulher"))
+    df_recodificado["tipomovimentação"] = np.where(df_recodificado["saldomovimentação"].values == 1, "Admissão",
+                                                   "Desligamento")
     if turismo == "Sim":
         df_recodificado = df_recodificado.astype({"Categoria": "category", "graudeinstrução": "category",
-                                                  "raçacor": "category", "sexo": "category"})
+                                                  "raçacor": "category", "sexo": "category",
+                                                  "tipomovimentação": "category"})
     else:
         df_recodificado = df_recodificado.astype({"município": "category", "graudeinstrução": "category",
-                                                  "raçacor": "category", "sexo": "category"})
+                                                  "raçacor": "category", "sexo": "category",
+                                                  "tipomovimentação": "category"})
     return df_recodificado
 
 
@@ -269,24 +273,26 @@ def agregar_resultados(df_recodificado: pd.DataFrame, turismo: bool) -> pd.DataF
     :type turismo: bool
     """
     if turismo == "Sim":
-        print(f"\nAgrupando os dados por categoria do turismo, escolaridade, raça/cor e sexo")
+        print(f"\nAgrupando os dados por categoria do turismo, tipo de movimentação, escolaridade, raça/cor e sexo")
         dados_agrupados = (
             df_recodificado
-            .groupby(["Categoria", "graudeinstrução", "raçacor", "sexo"], dropna=False)
+            .groupby(["Categoria", "tipomovimentação", "graudeinstrução", "raçacor", "sexo"], dropna=False)
             .agg(**{
                 "Salário médio (R$)": ("salário", "mean"),
-                "Saldo de movimentações": ("saldomovimentação", "sum")
+                "Saldo de movimentações": ("saldomovimentação", "sum"),
+                "Idade média": ("idade", "mean")
             })
             .reset_index()
         )
     else:
-        print(f"\nAgrupando os dados por município, escolaridade, raça/cor e sexo")
+        print(f"\nAgrupando os dados por município, tipo de movimentação, escolaridade, raça/cor e sexo")
         dados_agrupados = (
             df_recodificado
-            .groupby(["município", "graudeinstrução", "raçacor", "sexo"], dropna=False)
+            .groupby(["município", "tipomovimentação", "graudeinstrução", "raçacor", "sexo"], dropna=False)
             .agg(**{
                 "Salário médio (R$)": ("salário", "mean"),
-                "Saldo de movimentações": ("saldomovimentação", "sum")
+                "Saldo de movimentações": ("saldomovimentação", "sum"),
+                "Idade média": ("idade", "mean")
             })
             .reset_index()
         )
@@ -303,14 +309,13 @@ def lidar_NAs(df_agregado: pd.DataFrame, turismo: bool) -> pd.DataFrame:
     print(f"\nLidando com os dados ausentes")
     df_agregado_final = pd.DataFrame.copy(df_agregado)
 
-    df_agregado_final["salario_faltante"] = np.where(df_agregado_final["Salário médio (R$)"].isna(), 1, 0)
-    df_agregado_final["movimentaçao_faltante"] = np.where(df_agregado_final["Saldo de movimentações"].isna(), 1, 0)
 
     df_agregado_final["Salário médio (R$)"] = np.where(df_agregado_final["Salário médio (R$)"].isna(), float("NaN"),
                                                        df_agregado_final["Salário médio (R$)"])
     df_agregado_final["Saldo de movimentações"] = np.where(df_agregado_final["Saldo de movimentações"].isna(), float("NaN"),
                                                            df_agregado_final["Saldo de movimentações"])
-
+    df_agregado_final["Idade média"] = np.where(df_agregado_final["Idade média"].isna(), float("NaN"),
+                                                           df_agregado_final["Idade média"])
     df_agregado_final["graudeinstrução"] = np.where(df_agregado_final["graudeinstrução"].isna(), "Dado ausente",
                                                     df_agregado_final["graudeinstrução"])
     df_agregado_final["raçacor"] = np.where(df_agregado_final["raçacor"].isna(), "Dado ausente",
@@ -320,14 +325,14 @@ def lidar_NAs(df_agregado: pd.DataFrame, turismo: bool) -> pd.DataFrame:
     df_agregado_final["Data"] = periodo_escolhido
 
     if turismo == "Sim":
-        df_agregado_final.rename(columns={"graudeinstrução": "Escolaridade", "raçacor": "Raça/Cor",
+        df_agregado_final.rename(columns={"graudeinstrução": "Escolaridade", "tipomovimentação": "Movimentação",
+                                          "raçacor": "Raça/Cor",
                                           "sexo": "Sexo", "salario_faltante": "Salário ausente",
                                           "movimentaçao_faltante": "Movimentação faltante"}, inplace=True)
     else:
-        df_agregado_final.rename(columns={"município": "Cód. Município",
+        df_agregado_final.rename(columns={"município": "Cód. Município", "tipomovimentação": "Movimentação",
                                           "graudeinstrução": "Escolaridade", "raçacor": "Raça/Cor",
-                                          "sexo": "Sexo", "salario_faltante": "Salário ausente",
-                                          "movimentaçao_faltante": "Movimentação faltante"}, inplace=True)
+                                          "sexo": "Sexo"}, inplace=True)
     return df_agregado_final
 
     ####---------------------Parte da plotagem dos gráficos---------------------####
@@ -620,7 +625,7 @@ def plotar_resultados(dados: pd.DataFrame, local: str) -> None:
     print(f"\n\nFIGURAS EXPORTADAS COM SUCESSO PARA A PASTA {local}")
 
 # LOOP PRINCIPAL DO PROGRAMA
-@Gooey(dump_build_config=True,
+@Gooey(dump_build_config=False,
        program_name="Utilitário para extração, leitura e tratamento de microdados do NOVO CAGED sobre turismo - LABIMEC",
        language="portuguese", default_size=(1024, 800), image_dir="figs", language_dir="lang",
        show_restart_button=False,
@@ -643,7 +648,7 @@ def plotar_resultados(dados: pd.DataFrame, local: str) -> None:
                "license": "Gratuito para uso pessoal."
            }, {
                "type": "MessageDialog",
-               "menuTitle": "Informação",
+               "menuTitle": "Contato",
                "caption": "Feedback",
                "message": "Para quaisquer dúvidas, sugestões, críticas ou elogios entrar em contato com o desenvolvedor através do e-mail pcunha.2107@gmail.com."
            }]
@@ -674,7 +679,7 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
     # Criação dos campos para entrada — parte da extração dos dados
     extracao.add_argument(
         "Escolher", help=msg_arquivos, widget="Dropdown", choices=visualizacao_arquivos_disponiveis,
-        default="Janeiro-2020"
+        default=visualizacao_arquivos_disponiveis[-1]
     )
     extracao.add_argument(
         "Salvar", help=msg_salvar, widget="DirChooser", action="store", type=str
