@@ -1,4 +1,4 @@
-# LABIMEC - NOVO CAGED &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![](Labimec.png) &nbsp;  ![](Pessoal.png)
+# LABIMEC - NOVO CAGED &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![](Labimec.png) &nbsp;  ![](Pessoal.png)
 
 Um programa do Laboratório de Inteligência Artificial e Macroeconomia Computacional (LAEC) e desenvolvido por mim, Pedro Milreu Cunha, pesquisador do LABIMEC.
 
