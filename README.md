@@ -1,6 +1,12 @@
-# LABIMEC - NOVO CAGED
+# LABIMEC - NOVO CAGED ![](Labimec.png) ![](Pessoal.png)
+
+Um programa do Laboratório de Inteligência Artificial e Macroeconomia Computacional (LAEC) e desenvolvido por mim, Pedro Milreu Cunha, pesquisador do LABIMEC.
+
+**Descrição e visão geral do programa**
 
 Aplicativo para extração dos microdados do NOVO CAGED (2020-) e análise do setor de turismo em João Pessoa utilizando FTP e Gooey.
+
+![Visão do programa](Programa.png)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,9 +14,13 @@ O programa é dividido em quatro seções:
  
  1. **Download e extração dos dados**:
  
-  Utilizar esses campos para escolher o arquivo desejado do servidor FTP e a pasta onde deseja salvá-lo.
+  ![Download e extração dos dados](Extração.png)
  
+  Utilizar esses campos para escolher o arquivo desejado do servidor FTP e a pasta onde deseja salvá-lo.
+   
  2. **Transformação dos dados**:
+ 
+  ![Transformação dos dados](Transformação.png)
  
   Utilizar esses campos para marcar se deseja realizar uma limpeza e agregação dos dados e, também, se deve ser feita uma análise especificamente para o setor de turismo de João Pessoa. 
   
@@ -77,6 +87,8 @@ e foram agrupadas nas seguintes **categorias**:
     - Atividades desportivas e recreativas.
   
  3. **Visualização dos dados**:
+ 
+ ![Visualização dos resultados](Visualização.png)
 
  Utilizar essa seção para marcar se os gráficos-síntese dos resultados devem ser elaborados e exportados e escolher a pasta de destino. São eles (todos gráficos de barra):
 
@@ -115,7 +127,9 @@ e foram agrupadas nas seguintes **categorias**:
  
  4. **Exclusão do arquivo intermediario em .txt**:
  
-   Utilizar essa seção para escolher se o arquivo intermediário em .txt dos microdados deve ser excluído.
+ ![Exclusão do arquivo intermediário](Exclusão.png)
+ 
+ Utilizar essa seção para escolher se o arquivo intermediário em .txt dos microdados deve ser excluído.
    
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
