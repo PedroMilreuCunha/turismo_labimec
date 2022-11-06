@@ -1,5 +1,4 @@
 # Pacotes necessários
-
 # !pip install openpyxl
 from ftplib import FTP
 import os
@@ -13,37 +12,41 @@ from gooey import Gooey, GooeyParser
 
 # DECLARAÇÃO DE CONSTANTES
 
-####---------------------Parte da extração dos dados---------------------####
+# ---------------------Parte da extração dos dados---------------------
 SERVER = "ftp.mtps.gov.br"
 MESES = {"01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05": "Maio", "06": "Junho",
          "07": "Julho", "08": "Agosto", "09": "Setembro", "10": "Outubro", "11": "Novembro", "12": "Dezembro"}
 MESES_INV = dict((v, k) for k, v in MESES.items())
 
-####---------------------Parte do tratamento dos dados referentes ao turismo---------------------####
+# ---------------------Parte do tratamento dos dados referentes ao turismo---------------------
 SUBCLASSES_TURISMO = pd.DataFrame(data={"Subclasse":
-                                            (5510801, 5510802, 5510803,  # Hóteis e similares
-                                             5590601, 5590602, 5590603, 5590699,  # Outros tipos de alojamento
-                                             5611201, 5611202, 5611203,  # Restaurantes
-                                             5612100,  # Serviços ambulantes de alimentação
-                                             4923001, 4923002,  # Transporte rodoviário de táxi
-                                             4929901, 4929903, 4929999,  # Transporte rodoviário coletivo
-                                             4950700,  # Trens turísticos
-                                             4922101, 4922102, 4922103,  # Transporte rodoviário coletivo (trens)
-                                             4929902, 4929904,  # Transporte rodoviário coletivo (fretamento) e n.e.a.
-                                             5011402, 5012202, 5022001, 5022002, 5091201, 5091202, 5099801, 5099899,
-                                             # Transporte aquaviário
-                                             5111100, 5112901, 5112999,  # Transporte aéreo
-                                             7111000,  # Aluguel de transporte
-                                             7911200, 7912100,  # Agências de viagem
-                                             7990200,  # Serviços de reserva e n.e.a.
-                                             9001901, 9001902, 9001903, 9001904, 9001905, 9001999,  # Artês cênicas
-                                             9102301,  # Atividades de museus
-                                             9200301, 9200302, 9200399,
-                                             # Atividade de exploração de jogos de azar e apostas
-                                             9319101, 9319199,  # Atividades esportivas n.e.a.
-                                             9321200,  # Parques de diversão e parques temáticos
-                                             9329801, 9329802, 9329803, 9329804,
-                                             9329899)})  # Atividades de recreação e lazer n.e.a.
+                                        (5510801, 5510802, 5510803,  # Hóteis e similares
+                                         5590601, 5590602, 5590603, 5590699,  # Outros tipos de alojamento
+                                         5611201, 5611202, 5611203,  # Restaurantes
+                                         5612100,  # Serviços ambulantes de alimentação
+                                         4923001, 4923002,  # Transporte rodoviário de táxi
+                                         4929901, 4929903, 4929999,  # Transporte rodoviário coletivo
+                                         4950700,  # Trens turísticos
+                                         # Transporte rodoviário coletivo (trens)
+                                         4922101, 4922102, 4922103,
+                                         # Transporte rodoviário coletivo (fretamento) e n.e.a.
+                                         4929902, 4929904,
+                                         5011402, 5012202, 5022001, 5022002, 5091201, 5091202, 5099801, 5099899,
+                                         # Transporte aquaviário
+                                         5111100, 5112901, 5112999,  # Transporte aéreo
+                                         7111000,  # Aluguel de transporte
+                                         7911200, 7912100,  # Agências de viagem
+                                         # Serviços de reserva e n.e.a.
+                                         7990200,
+                                         9001901, 9001902, 9001903, 9001904, 9001905, 9001999,  # Artês cênicas
+                                         9102301,  # Atividades de museus
+                                         9200301, 9200302, 9200399,
+                                         # Atividade de exploração de jogos de azar e apostas
+                                         # Atividades esportivas n.e.a.
+                                         9319101, 9319199,
+                                         9321200,  # Parques de diversão e parques temáticos
+                                         9329801, 9329802, 9329803, 9329804,
+                                         9329899)})  # Atividades de recreação e lazer n.e.a
 
 ALOJAMENTO = (5510801, 5510802, 5510803,
               5590601, 5590602, 5590603, 5590699)
@@ -57,7 +60,8 @@ TRANSPORTE_TERRESTRE = (4923001, 4923002,
                         4922101, 4922102, 4922103,
                         4929902, 4929904)
 
-TRANSPORTE_AQUAVIARIO = (5011402, 5012202, 5022001, 5022002, 5091201, 5091202, 5099801, 5099899)
+TRANSPORTE_AQUAVIARIO = (5011402, 5012202, 5022001,
+                         5022002, 5091201, 5091202, 5099801, 5099899)
 
 TRANSPORTE_AEREO = (5111100, 5112901, 5112999)
 
@@ -73,18 +77,20 @@ LAZER = (9200301, 9200302, 9200399,
          9321200,
          9329801, 9329802, 9329803, 9329804, 9329899)
 
-####---------------------Parte gráfica-----------------------------------####
+# ---------------------Parte gráfica-----------------------------------
 
 sns.set(style="white")
 plt.rcParams["figure.dpi"] = 400
 plt.rcParams["figure.figsize"] = [10, 8]
 plt.rcParams["figure.autolayout"] = True
-plt.rcParams["font.family"] = "sans-serif"
-plt.rcParams["font.sans-serif"] = ["Tahoma"]
+plt.rcParams["font.family"] = "serif"
+plt.rcParams["font.serif"] = ["DejaVu Sans"]
+
 
 # FUNÇÕES
 
-####---------------------Parte da extração dos dados---------------------####
+# ---------------------Parte da extração dos dados---------------------
+
 
 def obter_diretorios_caged() -> list:
     """
@@ -110,7 +116,8 @@ def criar_caminhos(opcao_escolhida: str) -> tuple:
     :rtype c: str
     :type opcao_escolhida: str
     """
-    diretorio = "pdet/microdados/NOVO CAGED/" + opcao_escolhida[0:4] + "/" + opcao_escolhida
+    diretorio = "pdet/microdados/NOVO CAGED/" + \
+                opcao_escolhida[0:4] + "/" + opcao_escolhida
     nome_arquivo = "CAGEDMOV" + opcao_escolhida + ".7z"
 
     c = (diretorio, nome_arquivo)
@@ -127,7 +134,7 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
     :type nome_arquivo: str
     :type local_salvar: str
     """
-    print(f"\nIniciando o download do arquivo {nome_arquivo}.")
+    print(f"\nIniciando o download do arquivo {nome_arquivo}.\n")
     ftp = FTP(SERVER)
     ftp.login()
     ftp.cwd(diretorio_download)
@@ -141,13 +148,16 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
         print(f"\nERRO DURANTE A TRANSFERÊNCIA: {e}")
 
     print(f"\nIniciando extração e remoção do arquivo comprimido intermediário.")
-    print(f"\nCaminho para salvar: {local_salvar}\CAGEDMOV{periodo_escolhido}.txt")
+    print(
+        f"\nCaminho para salvar: {local_salvar}\\CAGEDMOV{periodo_escolhido}.txt")
     try:
-        py7zr.SevenZipFile(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z", "r").extractall(local_salvar)
+        py7zr.SevenZipFile(local_salvar + "/CAGEDMOV" +
+                           periodo_escolhido + ".7z", "r").extractall(local_salvar)
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z")
         print(f"\nARQUIVO FINAL .txt EXTRAÍDO COM SUCESSO.")
     except Exception as e:
-        print(f"\nERRO DURANTE A EXTRAÇÃO DO ARQUIVO: {e}\nA versão em .7z foi mantida.")
+        print(
+            f"\nERRO DURANTE A EXTRAÇÃO DO ARQUIVO: {e}\nA versão em .7z foi mantida.")
 
 
 def escrever_arquivo(dados):
@@ -162,9 +172,10 @@ def escrever_arquivo(dados):
     n += 1
     t = 100 * progresso / tamanho
     if n % 200 == 0:
-        print(f"{t:.2f}%,", sep=":--:")
+        print(f"{t:.2f}%,")
 
-    ####---------------------Parte da transformação dos dados---------------------####
+
+# ---------------------Parte da transformação dos dados---------------------
 
 
 def criar_df_categorias() -> pd.DataFrame:
@@ -172,7 +183,6 @@ def criar_df_categorias() -> pd.DataFrame:
 
     :rtype df_categorias_turismo: pd.DataFrame
     """
-    coluna = "Subclasse"
     condicoes = [SUBCLASSES_TURISMO.isin(ALOJAMENTO),
                  SUBCLASSES_TURISMO.isin(ALIMENTACAO),
                  SUBCLASSES_TURISMO.isin(TRANSPORTE_TERRESTRE),
@@ -205,11 +215,13 @@ def importar_caged(nome_arquivo: str, df_categorias_turismo: pd.DataFrame, turis
     :type turismo: bool
     """
     dados_caged = pd.DataFrame()
-    if turismo == "Sim":
+    if turismo:
         print(
-            f"\nImportando os dados da CAGED e criando o pd.DataFrame apenas com os dados referentes ao turismo em João Pessoa")
+            f"\nImportando os dados da CAGED e criando o pd.DataFrame apenas com os dados referentes"
+            f" ao turismo em João Pessoa")
         try:
-            dados_caged_turismo_jp = pd.read_table(nome_arquivo, decimal=",", sep=";")
+            dados_caged_turismo_jp = pd.read_table(
+                nome_arquivo, decimal=",", sep=";")
             dados_caged_turismo_jp = dados_caged_turismo_jp[dados_caged_turismo_jp["município"] == 250750]
             dados_caged_turismo_jp = df_categorias_turismo.merge(dados_caged_turismo_jp, how="left",
                                                                  left_on="Subclasse",
@@ -241,7 +253,8 @@ def recodificar_dummies(dados_caged: pd.DataFrame, turismo: bool) -> pd.DataFram
                                                   np.where(df_recodificado["graudeinstrução"].isin(range(1, 5)),
                                                            "Ensino fundamental incompleto",
                                                            np.where(
-                                                               df_recodificado["graudeinstrução"].isin(range(5, 7)),
+                                                               df_recodificado["graudeinstrução"].isin(
+                                                                   range(5, 7)),
                                                                "Ensino médio incompleto",
                                                                np.where(df_recodificado["graudeinstrução"].values <= 8,
                                                                         "Ensino médio completo",
@@ -254,7 +267,7 @@ def recodificar_dummies(dados_caged: pd.DataFrame, turismo: bool) -> pd.DataFram
                                                 "Mulher"))
     df_recodificado["tipomovimentação"] = np.where(df_recodificado["saldomovimentação"].values == 1, "Admissão",
                                                    "Desligamento")
-    if turismo == "Sim":
+    if turismo:
         df_recodificado = df_recodificado.astype({"Categoria": "category", "graudeinstrução": "category",
                                                   "raçacor": "category", "sexo": "category",
                                                   "tipomovimentação": "category"})
@@ -272,7 +285,7 @@ def agregar_resultados(df_recodificado: pd.DataFrame, turismo: bool) -> pd.DataF
     :type df_recodificado: pd.DataFrame
     :type turismo: bool
     """
-    if turismo == "Sim":
+    if turismo:
         print(f"\nAgrupando os dados por categoria do turismo, tipo de movimentação, escolaridade, raça/cor e sexo")
         dados_agrupados = (
             df_recodificado
@@ -299,7 +312,7 @@ def agregar_resultados(df_recodificado: pd.DataFrame, turismo: bool) -> pd.DataF
     return dados_agrupados
 
 
-def lidar_NAs(df_agregado: pd.DataFrame, turismo: bool) -> pd.DataFrame:
+def lidar_na(df_agregado: pd.DataFrame, turismo: bool) -> pd.DataFrame:
     """
 
     :rtype df_agregado_final: pd.DataFrame
@@ -309,22 +322,23 @@ def lidar_NAs(df_agregado: pd.DataFrame, turismo: bool) -> pd.DataFrame:
     print(f"\nLidando com os dados ausentes")
     df_agregado_final = pd.DataFrame.copy(df_agregado)
 
-
     df_agregado_final["Salário médio (R$)"] = np.where(df_agregado_final["Salário médio (R$)"].isna(), float("NaN"),
                                                        df_agregado_final["Salário médio (R$)"])
-    df_agregado_final["Saldo de movimentações"] = np.where(df_agregado_final["Saldo de movimentações"].isna(), float("NaN"),
+    df_agregado_final["Saldo de movimentações"] = np.where(df_agregado_final["Saldo de movimentações"].isna(),
+                                                           float("NaN"),
                                                            df_agregado_final["Saldo de movimentações"])
     df_agregado_final["Idade média"] = np.where(df_agregado_final["Idade média"].isna(), float("NaN"),
-                                                           df_agregado_final["Idade média"])
+                                                df_agregado_final["Idade média"])
     df_agregado_final["graudeinstrução"] = np.where(df_agregado_final["graudeinstrução"].isna(), "Dado ausente",
                                                     df_agregado_final["graudeinstrução"])
     df_agregado_final["raçacor"] = np.where(df_agregado_final["raçacor"].isna(), "Dado ausente",
                                             df_agregado_final["raçacor"])
-    df_agregado_final["sexo"] = np.where(df_agregado_final["sexo"].isna(), "Dado ausente", df_agregado_final["sexo"])
+    df_agregado_final["sexo"] = np.where(
+        df_agregado_final["sexo"].isna(), "Dado ausente", df_agregado_final["sexo"])
 
     df_agregado_final["Data"] = periodo_escolhido
 
-    if turismo == "Sim":
+    if turismo:
         df_agregado_final.rename(columns={"graudeinstrução": "Escolaridade", "tipomovimentação": "Movimentação",
                                           "raçacor": "Raça/Cor",
                                           "sexo": "Sexo", "salario_faltante": "Salário ausente",
@@ -335,7 +349,9 @@ def lidar_NAs(df_agregado: pd.DataFrame, turismo: bool) -> pd.DataFrame:
                                           "sexo": "Sexo"}, inplace=True)
     return df_agregado_final
 
-    ####---------------------Parte da plotagem dos gráficos---------------------####
+
+# ---------------------Parte da plotagem dos gráficos---------------------
+
 
 def plotar_resultados(dados: pd.DataFrame, local: str) -> None:
     """
@@ -343,330 +359,398 @@ def plotar_resultados(dados: pd.DataFrame, local: str) -> None:
     :type dados: pd.DataFrame
     :type local: str
     """
-    print("\n(1/14) Salário médio por categoria")
-    try:
-        t = dados.groupby("Categoria").agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                              "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        g1 = sns.catplot(data = t, x = "Salário médio (R$)", y = "Categoria", palette="viridis", kind = 'bar',
-                         aspect = 1.4)
-        ax = g1.facet_axis(0, 0)
-        for c in ax.containers:
-            labels = [f"{(v.get_width()):.0f}" for v in c]
-            ax.bar_label(c, labels=labels, label_type='edge')
-        plt.xlabel("Salário médio (R$)", size = 14)
-        plt.xlim((0, 2300))
-        plt.tick_params(axis = "both", which = "major", labelsize = 14)
-        g1.set(ylabel=None)
-        sns.despine()
-
-        plt.savefig(local + "/salario_medio_por_categoria_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (1/14): {e}")
-
-    print("\n(2/14) Salário médio por escolaridade")
-    try:
-        t = dados.groupby("Escolaridade").agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                         "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-    
-        g2 = sns.catplot(data = t, x = "Salário médio (R$)", y = "Escolaridade", palette="viridis", kind = 'bar', 
-                         aspect = 1.4)
-        ax = g2.facet_axis(0, 0)
-        for c in ax.containers:
-            labels = [f"{(v.get_width()):.0f}" for v in c]
-            ax.bar_label(c, labels=labels, label_type='edge')
-        g2.set(ylabel=None)
-        sns.despine()
-
-        plt.xlabel("Salário médio (R$)", size = 14)
-        plt.savefig(local + "/salario_medio_por_escolaridade_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (2/14): {e}")
-
-    print("\n(3/14) Salário médio por sexo")
-    try:
-        t = dados.groupby("Sexo").agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                         "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-
-        g3 = sns.catplot(data = t, x = "Salário médio (R$)", y = "Sexo", palette="viridis", kind = 'bar', aspect = 1.4)
-        ax = g3.facet_axis(0, 0)
-        for c in ax.containers:
-            labels = [f"{(v.get_width()):.0f}" for v in c]
-            ax.bar_label(c, labels=labels, label_type='edge')
-        g3.set(ylabel=None)
-        sns.despine()
-        plt.xlabel("Salário médio (R$)", size = 14)
-        plt.savefig(local + "/salario_medio_por_sexo_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (3/14): {e}")
-
-    print("\n(4/14) Salário médio por raça/cor")
-    try:
-        t = dados.groupby("Raça/Cor").agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                             "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-
-        g4 = sns.catplot(data = t, x = "Salário médio (R$)", y = "Raça/Cor", palette="viridis", kind = 'bar',
-                         aspect = 1.4)
-        ax = g4.facet_axis(0, 0)
-        for c in ax.containers:
-            labels = [f"{(v.get_width()):.0f}" for v in c]
-            ax.bar_label(c, labels=labels, label_type='edge')
-        g4.set(ylabel=None)
-        sns.despine()
-        plt.margins(x = 0.2)
-        plt.xlabel("Salário médio (R$)", size = 14)
-        plt.savefig(local + "/salario_medio_por_raca_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (4/14): {e}")
-        
-    print("\n(5/14) Salário médio por categoria, escolaridade e sexo")
-    try:
-        t = dados.groupby(["Categoria", "Escolaridade", "Sexo"]).agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                                                    "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        with sns.plotting_context(font_scale=2.25):
-            g5 = sns.catplot(data = t, x = "Salário médio (R$)", y = "Categoria", palette="viridis",
-                             col = "Sexo", row = "Escolaridade", kind="bar", errorbar = None, aspect = 1.4, margin_titles = True,
-                             sharex = False, sharey = True, facet_kws = {"despine" : True})
-            for ax in g5.axes.ravel():
-                # add annotations
-                for c in ax.containers:
-                    labels = [f"{(v.get_width()):.0f}" for v in c]
-                    ax.bar_label(c, labels=labels, label_type="edge")
-                ax.margins(x=0.1, y = 0.01)
-            g5.set(ylabel=None)
+    for m in ("Admissão", "Desligamento"):
+        if not os.path.isdir(local + "/" + periodo_escolhido + " - " + m):
+            os.mkdir(local + "/" + periodo_escolhido + " - " + m)
+        print(f"\nGráficos de: {m}")
+        temp = dados.query("`Movimentação` == @m").reset_index()
+        temp["Saldo de movimentações"] = abs(temp["Saldo de movimentações"])
+        print("\n(1/14) Salário médio por categoria")
+        try:
+            t = temp.groupby("Categoria").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                                                 "Saldo de movimentações": (
+                                                     "Saldo de movimentações", "sum")}).reset_index()
+            g1 = sns.catplot(data=t, x="Salário médio (R$)", y="Categoria", palette="viridis", kind='bar',
+                             aspect=1.4)
+            ax = g1.facet_axis(0, 0)
+            for c in ax.containers:
+                labels = [f"{(v.get_width()):.0f}" for v in c]
+                ax.bar_label(c, labels=labels, label_type='edge')
+            plt.xlabel("Salário médio (R$)", size=14)
+            plt.xlim((0, 2300))
+            plt.tick_params(axis="both", which="major", labelsize=14)
+            g1.set(ylabel=None)
             sns.despine()
-        plt.savefig(local + "/salario_medio_por_categoria_escolaridade_sexo_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (5/14): {e}")
 
-    print("\n(6/14) Salário médio por categoria, escolaridade e raça/cor")
-    try:
-        t = dados.groupby(["Categoria", "Escolaridade", "Raça/Cor"]).agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                                                            "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        with sns.plotting_context(font_scale=2.25):
-            g6 = sns.catplot(data = t, x = "Salário médio (R$)", y = "Categoria", palette="viridis",
-                             col = "Escolaridade", row = "Raça/Cor", kind="bar", errorbar = None, aspect = 1.4, margin_titles = True,
-                             sharex = False, sharey = True, facet_kws = {"despine" : True})
-            for ax in g6.axes.ravel():
-                # add annotations
-                for c in ax.containers:
-                    labels = [f"{(v.get_width()):.0f}" for v in c]
-                    ax.bar_label(c, labels=labels, label_type="edge")
-                ax.margins(x=0.1, y = 0.01)
-            g6.set(ylabel=None)
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/salario_medio_por_categoria" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (1/14): {e}")
+
+        print("\n(2/14) Salário médio por escolaridade")
+        try:
+            t = temp.groupby("Escolaridade").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                                                    "Saldo de movimentações": (
+                                                        "Saldo de movimentações", "sum")}).reset_index()
+
+            g2 = sns.catplot(data=t, x="Salário médio (R$)", y="Escolaridade", palette="viridis", kind='bar',
+                             aspect=1.4)
+            ax = g2.facet_axis(0, 0)
+            for c in ax.containers:
+                labels = [f"{(v.get_width()):.0f}" for v in c]
+                ax.bar_label(c, labels=labels, label_type='edge')
+            g2.set(ylabel=None)
             sns.despine()
-        plt.savefig(local + "/salario_medio_por_categoria_escolaridade_raca_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (6/14): {e}")
 
+            plt.xlabel("Salário médio (R$)", size=14)
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/salario_medio_por_escolaridade" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (2/14): {e}")
 
-    print("\n(7/14) Salário médio por categoria, sexo e raça/cor")
-    try:
-        t = dados.groupby(["Categoria", "Sexo", "Raça/Cor"]).agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                                                    "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        with sns.plotting_context(font_scale=2.25):
-            g7 = sns.catplot(data = t, x = "Salário médio (R$)", y = "Categoria", palette="viridis",
-                             col = "Sexo", row = "Raça/Cor", kind="bar", errorbar = None, aspect = 1.4, margin_titles = True,
-                             sharex = False, sharey = True, facet_kws = {"despine" : True})
-            for ax in g7.axes.ravel():
-                # add annotations
-                for c in ax.containers:
-                    labels = [f"{(v.get_width()):.0f}" for v in c]
-                    ax.bar_label(c, labels=labels, label_type="edge")
-                ax.margins(x=0.1, y = 0.01)
-            g7.set(ylabel=None)
+        print("\n(3/14) Salário médio por sexo")
+        try:
+            t = temp.groupby("Sexo").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                                            "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
+
+            g3 = sns.catplot(data=t, x="Salário médio (R$)", y="Sexo",
+                             palette="viridis", kind='bar', aspect=1.4)
+            ax = g3.facet_axis(0, 0)
+            for c in ax.containers:
+                labels = [f"{(v.get_width()):.0f}" for v in c]
+                ax.bar_label(c, labels=labels, label_type='edge')
+            g3.set(ylabel=None)
             sns.despine()
-        plt.savefig(local + "/salario_medio_por_categoria_sexo_raca_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (7/14): {e}")
+            plt.xlabel("Salário médio (R$)", size=14)
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/salario_medio_por_sexo" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (3/14): {e}")
 
-    print("\n(8/14) Saldo de movimentações por categoria")
-    try:
-        t = dados.groupby("Categoria").agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                              "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        g8 = sns.catplot(data = t, x = "Saldo de movimentações", y = "Categoria", palette="viridis", kind = 'bar',
-                         aspect = 1.4)
-        ax = g8.facet_axis(0, 0)
-        for c in ax.containers:
-            labels = [f"{(v.get_width()):.0f}" for v in c]
-            ax.bar_label(c, labels=labels, label_type='edge')
-        plt.xlabel("Saldo de movimentações", size = 12)
-        plt.tick_params(axis = "both", which = "major", labelsize = 12)
-        g8.set(ylabel=None)
-        sns.despine()
-        plt.savefig(local + "/saldo_movimentacoes_por_categoria_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (8/14): {e}")
+        print("\n(4/14) Salário médio por raça/cor")
+        try:
+            t = (
+                temp.groupby("Raça/Cor")
+                .agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                        "Saldo de movimentações": ("Saldo de movimentações", "sum")})
+                .reset_index()
+            )
+            g4 = sns.catplot(data=t, x="Salário médio (R$)", y="Raça/Cor", palette="viridis", kind='bar',
+                             aspect=1.4)
+            ax = g4.facet_axis(0, 0)
+            for c in ax.containers:
+                labels = [f"{(v.get_width()):.0f}" for v in c]
+                ax.bar_label(c, labels=labels, label_type='edge')
+            g4.set(ylabel=None)
+            sns.despine()
+            plt.margins(x=0.2)
+            plt.xlabel("Salário médio (R$)", size=14)
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/salario_medio_por_raca" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (4/14): {e}")
 
-    print("\n(9/14) Saldo de movimentações por escolaridade")
-    try:
-        t = dados.groupby("Escolaridade").agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                                 "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        g9 = sns.catplot(data = t, x = "Saldo de movimentações", y = "Escolaridade", palette="viridis", kind = 'bar',
-                         aspect = 1.4)
-        ax = g9.facet_axis(0, 0)
-        for c in ax.containers:
-            labels = [f"{(v.get_width()):.0f}" for v in c]
-            ax.bar_label(c, labels=labels, label_type='edge')
-        g9.set(ylabel=None)
-        sns.despine()
-        plt.xlabel("Saldo de movimentações", size = 14)
-        plt.margins(x = 0.2)
-        plt.savefig(local + "/saldo_movimentacoes_por_escolaridade_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (9/14): {e}")
-    
-    print("\n(10/14) Saldo de movimentações por sexo")
-    try:
-        t = dados.groupby("Sexo").agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                         "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        g10 = sns.catplot(data = t, x = "Saldo de movimentações", y = "Sexo", palette="viridis", kind = 'bar',
-                         aspect = 1.4)
-        ax = g10.facet_axis(0, 0)
-        for c in ax.containers:
-            labels = [f"{(v.get_width()):.0f}" for v in c]
-            ax.bar_label(c, labels=labels, label_type='edge')
-        g10.set(ylabel=None)
-        sns.despine()
-        plt.xlabel("Saldo de movimentações", size = 14)
-        plt.margins(x = 0.2)
-        plt.savefig(local + "/saldo_movimentacoes_por_sexo_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (10/14): {e}")
+        print("\n(5/14) Salário médio por categoria, escolaridade e sexo")
+        try:
+            t = temp.groupby(["Categoria", "Escolaridade", "Sexo"]).agg(
+                **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                   "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
+            with sns.plotting_context(font_scale=2.25):
+                g5 = sns.catplot(data=t, x="Salário médio (R$)", y="Categoria", palette="viridis",
+                                 col="Sexo", row="Escolaridade", kind="bar", errorbar=None, aspect=1.4,
+                                 margin_titles=True,
+                                 sharex=False, sharey=True, facet_kws={"despine": True})
+                for ax in g5.axes.ravel():
+                    # add annotations
+                    for c in ax.containers:
+                        labels = [f"{(v.get_width()):.0f}" for v in c]
+                        ax.bar_label(c, labels=labels, label_type="edge")
+                    ax.margins(x=0.1, y=0.01)
+                g5.set(ylabel=None)
+                sns.despine()
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/salario_medio_por_categoria_escolaridade_sexo" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (5/14): {e}")
 
-    print("\n(11/14) Saldo de movimentações por raça/cor")
-    try:
-        t = dados.groupby("Raça/Cor").agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                             "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        g11 = sns.catplot(data = t, x = "Saldo de movimentações", y = "Raça/Cor", palette="viridis", kind = 'bar',
-                         aspect = 1.4)
-        ax = g11.facet_axis(0, 0)
-        for c in ax.containers:
-            labels = [f"{(v.get_width()):.0f}" for v in c]
-            ax.bar_label(c, labels=labels, label_type='edge')
-        g11.set(ylabel=None)
-        sns.despine()
-        plt.margins(x = 0.2)
-        plt.xlabel("Saldo de movimentações", size = 14)
-        plt.savefig(local + "/saldo_movimentacoes_por_raca_" + periodo_escolhido + ".svg", pad_inches=0.05, bbox_inches="tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (11/14): {e}")
-        
-    print("\n(12/14) Saldo de movimentações por categoria, escolaridade e sexo")
-    try:
-        t = dados.groupby(["Categoria", "Escolaridade", "Sexo"]).agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                                                        "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        with sns.plotting_context(font_scale=2.25):
-            g12 = sns.catplot(data = t, x = "Saldo de movimentações", y = "Categoria", palette="viridis",
-                             col = "Sexo", row = "Escolaridade", kind="bar", errorbar = None, aspect = 1.4, margin_titles = True,
-                             sharex = False, sharey = True, facet_kws = {"despine" : True})
-            for ax in g12.axes.ravel():
-                # add annotations
-                for c in ax.containers:
-                    labels = [f"{(v.get_width()):.0f}" for v in c]
-                    ax.bar_label(c, labels=labels, label_type="edge")
-                ax.margins(x=0.1, y = 0.01)
-            g12.set(ylabel=None)
-        plt.savefig(local + "/saldo_movimentacoes_por_categoria_escolaridade_sexo_" + periodo_escolhido + ".svg", pad_inches = 0.05, bbox_inches = "tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (12/14): {e}")
+        print("\n(6/14) Salário médio por categoria, escolaridade e raça/cor")
+        try:
+            t = temp.groupby(["Categoria", "Escolaridade", "Raça/Cor"]).agg(
+                **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                   "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
+            with sns.plotting_context(font_scale=2.25):
+                g6 = sns.catplot(data=t, x="Salário médio (R$)", y="Categoria", palette="viridis",
+                                 col="Escolaridade", row="Raça/Cor", kind="bar", errorbar=None, aspect=1.4,
+                                 margin_titles=True,
+                                 sharex=False, sharey=True, facet_kws={"despine": True})
+                for ax in g6.axes.ravel():
+                    # add annotations
+                    for c in ax.containers:
+                        labels = [f"{(v.get_width()):.0f}" for v in c]
+                        ax.bar_label(c, labels=labels, label_type="edge")
+                    ax.margins(x=0.1, y=0.01)
+                g6.set(ylabel=None)
+                sns.despine()
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/salario_medio_por_categoria_escolaridade_raca" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (6/14): {e}")
 
-    print("\n(13/14) Saldo de movimentações por categoria, escolaridade e raça/cor")
-    try:
-        t = dados.groupby(["Categoria", "Escolaridade", "Raça/Cor"]).agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                                                        "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        with sns.plotting_context(font_scale=2.25):
-            g13 = sns.catplot(data = t, x = "Saldo de movimentações", y = "Categoria", palette="viridis",
-                             col = "Escolaridade", row = "Raça/Cor", kind="bar", errorbar = None, aspect = 1.4, margin_titles = True,
-                             sharex = False, sharey = True, facet_kws = {"despine" : True})
-            for ax in g13.axes.ravel():
-                # add annotations
-                for c in ax.containers:
-                    labels = [f"{(v.get_width()):.0f}" for v in c]
-                    ax.bar_label(c, labels=labels, label_type="edge")
-                ax.margins(x=0.1, y = 0.01)
-            g13.set(ylabel=None)
-        plt.savefig(local + "/saldo_movimentacoes_por_categoria_escolaridade_raca_" + periodo_escolhido + ".svg", pad_inches = 0.05, bbox_inches = "tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
-        print(f"Erro durante a exportação da figura (13/14): {e}")
-        
-    print("\n(14/14) Saldo de movimentações por categoria, sexo e raça/cor")
-    try:
-        t = dados.groupby(["Categoria", "Sexo", "Raça/Cor"]).agg(**{"Salário médio (R$)" : ("Salário médio (R$)", "mean"),
-                                                                    "Saldo de movimentações" : ("Saldo de movimentações", "sum")}).reset_index()
-        with sns.plotting_context(font_scale=2.25):
-            g14 = sns.catplot(data = t, x = "Saldo de movimentações", y = "Categoria", palette="viridis",
-                             col = "Sexo", row = "Raça/Cor", kind="bar", errorbar = None, aspect = 1.4, margin_titles = True,
-                             sharex = False, sharey = True, facet_kws = {"despine" : True})
-            for ax in g14.axes.ravel():
-                # add annotations
-                for c in ax.containers:
-                    labels = [f"{(v.get_width()):.0f}" for v in c]
-                    ax.bar_label(c, labels=labels, label_type="edge")
-                ax.margins(x=0.1, y = 0.01)
-            g14.set(ylabel=None)
-        plt.savefig(local + "/saldo_movimentacoes_por_categoria_sexo_raca_" + periodo_escolhido + ".svg", pad_inches = 0.05, bbox_inches = "tight")
-        print("Exportado com sucesso.")
-    except Exception as e:
+        print("\n(7/14) Salário médio por categoria, sexo e raça/cor")
+        try:
+            t = temp.groupby(["Categoria", "Sexo", "Raça/Cor"]).agg(
+                **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                   "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
+            with sns.plotting_context(font_scale=2.25):
+                g7 = sns.catplot(data=t, x="Salário médio (R$)", y="Categoria", palette="viridis",
+                                 col="Sexo", row="Raça/Cor", kind="bar", errorbar=None, aspect=1.4, margin_titles=True,
+                                 sharex=False, sharey=True, facet_kws={"despine": True})
+                for ax in g7.axes.ravel():
+                    # add annotations
+                    for c in ax.containers:
+                        labels = [f"{(v.get_width()):.0f}" for v in c]
+                        ax.bar_label(c, labels=labels, label_type="edge")
+                    ax.margins(x=0.1, y=0.01)
+                g7.set(ylabel=None)
+                sns.despine()
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/salario_medio_por_categoria_sexo_raca" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (7/14): {e}")
+
+        print("\n(8/14) Saldo de movimentações por categoria")
+        try:
+            t = temp.groupby("Categoria").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                                                 "Saldo de movimentações": (
+                                                     "Saldo de movimentações", "sum")}).reset_index()
+            g8 = sns.catplot(data=t, x="Saldo de movimentações", y="Categoria", palette="viridis", kind='bar',
+                             aspect=1.4)
+            ax = g8.facet_axis(0, 0)
+            for c in ax.containers:
+                labels = [f"{(v.get_width()):.0f}" for v in c]
+                ax.bar_label(c, labels=labels, label_type='edge')
+            plt.xlabel("Saldo de movimentações", size=12)
+            plt.tick_params(axis="both", which="major", labelsize=12)
+            g8.set(ylabel=None)
+            sns.despine()
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/saldo_movimentacoes_por_categoria" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (8/14): {e}")
+
+        print("\n(9/14) Saldo de movimentações por escolaridade")
+        try:
+            t = temp.groupby("Escolaridade").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                                                    "Saldo de movimentações": (
+                                                        "Saldo de movimentações", "sum")}).reset_index()
+            g9 = sns.catplot(data=t, x="Saldo de movimentações", y="Escolaridade", palette="viridis", kind='bar',
+                             aspect=1.4)
+            ax = g9.facet_axis(0, 0)
+            for c in ax.containers:
+                labels = [f"{(v.get_width()):.0f}" for v in c]
+                ax.bar_label(c, labels=labels, label_type='edge')
+            g9.set(ylabel=None)
+            sns.despine()
+            plt.xlabel("Saldo de movimentações", size=14)
+            plt.margins(x=0.2)
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/saldo_movimentacoes_por_escolaridade" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (9/14): {e}")
+
+        print("\n(10/14) Saldo de movimentações por sexo")
+        try:
+            t = temp.groupby("Sexo").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                                            "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
+            g10 = sns.catplot(data=t, x="Saldo de movimentações", y="Sexo", palette="viridis", kind='bar',
+                              aspect=1.4)
+            ax = g10.facet_axis(0, 0)
+            for c in ax.containers:
+                labels = [f"{(v.get_width()):.0f}" for v in c]
+                ax.bar_label(c, labels=labels, label_type='edge')
+            g10.set(ylabel=None)
+            sns.despine()
+            plt.xlabel("Saldo de movimentações", size=14)
+            plt.margins(x=0.2)
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/saldo_movimentacoes_por_sexo" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (10/14): {e}")
+
+        print("\n(11/14) Saldo de movimentações por raça/cor")
+        try:
+            t = temp.groupby("Raça/Cor").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                                                "Saldo de movimentações": (
+                                                    "Saldo de movimentações", "sum")}).reset_index()
+            g11 = sns.catplot(data=t, x="Saldo de movimentações", y="Raça/Cor", palette="viridis", kind='bar',
+                              aspect=1.4)
+            ax = g11.facet_axis(0, 0)
+            for c in ax.containers:
+                labels = [f"{(v.get_width()):.0f}" for v in c]
+                ax.bar_label(c, labels=labels, label_type='edge')
+            g11.set(ylabel=None)
+            sns.despine()
+            plt.margins(x=0.2)
+            plt.xlabel("Saldo de movimentações", size=14)
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/saldo_movimentacoes_por_raca" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (11/14): {e}")
+
+        print("\n(12/14) Saldo de movimentações por categoria, escolaridade e sexo")
+        try:
+            t = temp.groupby(["Categoria", "Escolaridade", "Sexo"]).agg(
+                **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                   "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
+            with sns.plotting_context(font_scale=2.25):
+                g12 = sns.catplot(data=t, x="Saldo de movimentações", y="Categoria", palette="viridis",
+                                  col="Sexo", row="Escolaridade", kind="bar", errorbar=None, aspect=1.4,
+                                  margin_titles=True,
+                                  sharex=False, sharey=True, facet_kws={"despine": True})
+                for ax in g12.axes.ravel():
+                    # add annotations
+                    for c in ax.containers:
+                        labels = [f"{(v.get_width()):.0f}" for v in c]
+                        ax.bar_label(c, labels=labels, label_type="edge")
+                    ax.margins(x=0.1, y=0.01)
+                g12.set(ylabel=None)
+            plt.savefig(
+                local + "/" + periodo_escolhido + " - " + m + "/saldo_movimentacoes_por_categoria_escolaridade_sexo" +
+                ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (12/14): {e}")
+
+        print("\n(13/14) Saldo de movimentações por categoria, escolaridade e raça/cor")
+        try:
+            t = temp.groupby(["Categoria", "Escolaridade", "Raça/Cor"]).agg(
+                **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                   "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
+            with sns.plotting_context(font_scale=2.25):
+                g13 = sns.catplot(data=t, x="Saldo de movimentações", y="Categoria", palette="viridis",
+                                  col="Escolaridade", row="Raça/Cor", kind="bar", errorbar=None, aspect=1.4,
+                                  margin_titles=True,
+                                  sharex=False, sharey=True, facet_kws={"despine": True})
+                for ax in g13.axes.ravel():
+                    # add annotations
+                    for c in ax.containers:
+                        labels = [f"{(v.get_width()):.0f}" for v in c]
+                        ax.bar_label(c, labels=labels, label_type="edge")
+                    ax.margins(x=0.1, y=0.01)
+                g13.set(ylabel=None)
+            plt.savefig(
+                local + "/" + periodo_escolhido + " - " + m + "/saldo_movimentacoes_por_categoria_escolaridade_raca" +
+                ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
+            print(f"Erro durante a exportação da figura (13/14): {e}")
+
+        print("\n(14/14) Saldo de movimentações por categoria, sexo e raça/cor")
+        try:
+            t = temp.groupby(["Categoria", "Sexo", "Raça/Cor"]).agg(
+                **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                   "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
+            with sns.plotting_context(font_scale=2.25):
+                g14 = sns.catplot(data=t, x="Saldo de movimentações", y="Categoria", palette="viridis",
+                                  col="Sexo", row="Raça/Cor", kind="bar", errorbar=None, aspect=1.4, margin_titles=True,
+                                  sharex=False, sharey=True, facet_kws={"despine": True})
+                for ax in g14.axes.ravel():
+                    # add annotations
+                    for c in ax.containers:
+                        labels = [f"{(v.get_width()):.0f}" for v in c]
+                        ax.bar_label(c, labels=labels, label_type="edge")
+                    ax.margins(x=0.1, y=0.01)
+                g14.set(ylabel=None)
+            plt.savefig(local + "/" + periodo_escolhido + " - " + m + "/saldo_movimentacoes_por_categoria_sexo_raca" +
+                        ".svg", pad_inches=0.05, bbox_inches="tight")
+            plt.close()
+            print("Exportado com sucesso.")
+        except Exception as e:
             print(f"Erro durante a exportação da figura (14/14): {e}")
+        print(
+            f"\n\nFIGURAS EXPORTADAS COM SUCESSO PARA A PASTA {local}/{periodo_escolhido} - {m}")
 
-    print(f"\n\nFIGURAS EXPORTADAS COM SUCESSO PARA A PASTA {local}")
 
 # LOOP PRINCIPAL DO PROGRAMA
-@Gooey(dump_build_config=False,
-       program_name="Utilitário para extração, leitura e tratamento de microdados do NOVO CAGED sobre turismo - LABIMEC",
+
+
+@Gooey(dump_build_config=False, richtext_controls=True, clear_before_run=True,
+       program_name="Utilitário para extração, leitura e tratamento de"
+                    " microdados do NOVO CAGED sobre turismo - LABIMEC",
        language="portuguese", default_size=(1024, 800), image_dir="figs", language_dir="lang",
        show_restart_button=False,
-       timing_options = {
-           "show_time_remaining":True,
-           "hide_time_remaining_on_complete":True},
+       timing_options={
+           "show_time_remaining": True,
+           "hide_time_remaining_on_complete": True},
        menu=[{
            "name": "Informações",
            "items": [{
                "type": "AboutDialog",
                "menuTitle": "Sobre",
-               "name": "Utilitário para extração, leitura e tratamento de microdados do NOVO CAGED sobre turismo - LABIMEC",
-               "description": "Um programa simples que serve para baixar, extrair e analisar os microdados do NOVO CAGED (2020 em diante)"
+               "name": "Utilitário para extração, leitura e tratamento de"
+                       " microdados do NOVO CAGED sobre turismo - LABIMEC",
+               "description": "Um programa simples que serve para baixar, extrair"
+                              " e analisar os microdados do NOVO CAGED (2020 em diante)"
                               " utilizando conexões FTP e o módulo Gooey para desenvolver a GUI.",
                "version": "1.0",
                "copyright": "2022",
                "website": "https://www.ufpb.br/labimec\nhttps://github.com/PedroMilreuCunha",
-               "developer": "Pedro Milreu Cunha - Doutorando e Mestre em Economia Aplicada pelo PPGE/UFPB e \nBacharel em Ciências Econômicas pela UFV"
+               "developer": "Pedro Milreu Cunha - Doutorando e Mestre em Economia"
+                            " Aplicada pelo PPGE/UFPB e \nBacharel em Ciências Econômicas pela UFV"
                             "",
                "license": "Gratuito para uso pessoal."
            }, {
                "type": "MessageDialog",
                "menuTitle": "Contato",
                "caption": "Feedback",
-               "message": "Para quaisquer dúvidas, sugestões, críticas ou elogios entrar em contato com o desenvolvedor através do e-mail pcunha.2107@gmail.com."
+               "message": "Para quaisquer dúvidas, sugestões, críticas"
+                          " ou elogios entrar em contato com o desenvolvedor através do e-mail pcunha.2107@gmail.com."
            }]
        }])
 def loop_programa():  # Função principal para obter e extrair os argumentos das entradas dos usuários
     # Descrição geral do programa
-    desc = "Programa utilizado para baixar, extrair e analisar (em relação ao turismo) os microdados do NOVO CAGED\ndisponíveis no servidor FTP do Ministério do Trabalho."
+    desc = "Programa utilizado para baixar, extrair e analisar" \
+           " (em relação ao turismo) os microdados do NOVO CAGED" \
+           "\ndisponíveis no servidor FTP do Ministério do Trabalho."
     parser = GooeyParser(description=desc)
 
-####---------------------Configuração da parte de transferência e extração dos dados do NOVO CAGED---------------------####
+    # Configuração da parte de transferência e extração dos dados do NOVO CAGED
     extracao = parser.add_argument_group(
-    "Download e extração dos dados",
-    description="Utilize esses campos para escolher o arquivo desejado do servidor FTP e a pasta onde deseja salvá-lo."
+        "Download e extração dos dados",
+        description="Utilize esses campos para escolher o arquivo desejado"
+                    " do servidor FTP e a pasta onde deseja salvá-lo.",
+        gooey_options={"show_border": True}
     )
 
     # Mensagens de ajuda
-    msg_arquivos = "Os microdados do NOVO CAGED disponíveis até a data atual podem ser vistos e escolhidos utilizando a caixa de seleção."
-    msg_salvar = "Utilize esse campo para selecionar a pasta de gravação do arquivo final com os microdados extraídos em .txt."
+    msg_arquivos = "Os microdados do NOVO CAGED disponíveis até a data atual" \
+                   " podem ser vistos e escolhidos utilizando a caixa de seleção."
+    msg_salvar = "Utilize esse campo para selecionar a pasta de gravação" \
+                 " do arquivo final com os microdados extraídos em .txt."
 
     # Obtenção dos arquivos disponíveis do servidor FTP
     arquivos_disponiveis = obter_diretorios_caged()
@@ -678,40 +762,46 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
 
     # Criação dos campos para entrada — parte da extração dos dados
     extracao.add_argument(
-        "Escolher", help=msg_arquivos, widget="Dropdown", choices=visualizacao_arquivos_disponiveis,
-        default=visualizacao_arquivos_disponiveis[-1]
+        "Escolher", help=msg_arquivos, widget="FilterableDropdown", choices=visualizacao_arquivos_disponiveis,
+        gooey_options={
+            "placeholder": "Comece a escrever o nome do mês que deseja (Janeiro, por exemplo)."}
     )
     extracao.add_argument(
-        "Salvar", help=msg_salvar, widget="DirChooser", action="store", type=str
+        "Salvar", help=msg_salvar, widget="DirChooser", action="store", type=str,
+        gooey_options={
+            "placeholder": "Escolha um diretório para salvar o arquivo final em .xlsx."}
     )
 
-    ####---------------------Configuração da parte de transformção dos microdados do NOVO CAGED---------------------####
+    # ---------------------Configuração da parte de transformção dos microdados do NOVO CAGED---------------------
     transformacao = parser.add_argument_group(
         "Transformação dos dados",
         description="Utilize essa seção para marcar se deseja realizar uma limpeza e agregação dos dados e, também,"
-                    "se deve ser feita uma análise especificamente para o setor de turismo de João Pessoa."
+                    "se deve ser feita uma análise especificamente para o setor de turismo de João Pessoa.",
+        gooey_options={"show_border": True}
     )
     # Mensagens de ajuda
-    msg_transformar = "Marque essa opção caso deseje que os dados sejam trabalhados, organizados e agregados por escolaridade," \
+    msg_transformar = "Marque essa opção caso deseje que os dados sejam" \
+                      " trabalhados, organizados e agregados por escolaridade," \
                       "município, raça/cor e sexo."
-    msg_turismo_jp = "Marque essa opção caso deseje que os dados trabalhados façam referência apenas às categoria do turismo e ao município de João Pessoa."
+    msg_turismo_jp = "Marque essa opção caso deseje que os dados trabalhados" \
+                     " façam referência apenas às categoria do turismo e ao município de João Pessoa."
 
     # Criação do campo para entrada — parte do tratamento dos dados
     transformacao.add_argument(
-        "Transformar", help=msg_transformar, widget="Dropdown", choices=["Sim", "Não"], default="Sim"
+        "--Transformar", help=msg_transformar, widget="BlockCheckbox", action="store_true"
     )
     # Criação do campo para entrada — parte do tratamento em relação ao turismo e João Pessoa
     transformacao.add_argument(
-        "Turismo", help=msg_turismo_jp, widget="Dropdown", choices=["Sim", "Não"], default="Não"
+        "--Turismo", help=msg_turismo_jp, widget="BlockCheckbox", action="store_true"
     )
 
-
-    ####---------------------Configuração da parte de visualização de sínteses dos resultados---------------------####
+    # ---------------------Configuração da parte de visualização de sínteses dos resultados---------------------
     plotagem = parser.add_argument_group(
         "Visualização dos dados",
         description="\t\t\t\tIMPORTANTE: DISPONÍVEL APENAS PARA OS DADOS DO TURISMO DE JOÃO PESSOA\n\n"
                     "Utilize essa seção para escolher se os gráficos-síntese dos resultados devem ser elaborados"
-                    " e exportados."
+                    " e exportados.",
+        gooey_options={"show_border": True}
     )
 
     # Mensagem de ajuda
@@ -720,16 +810,20 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
 
     # Criação do campo para entrada — parte da criação dos gráficos
     plotagem.add_argument(
-        "Plotar", help=msg_plotar, widget="Dropdown", choices=["Sim", "Não"], default="Não"
+        "--Plotar", help=msg_plotar, widget="BlockCheckbox", action="store_true"
     )
     plotagem.add_argument(
-        "--Exportar", help=msg_exportar, widget="DirChooser", action="store", type=str
+        "--Exportar", help=msg_exportar, widget="DirChooser", action="store", type=str,
+        gooey_options={
+            "placeholder": "Escolha o diretório para salvar os gráficos."}
     )
-    
-    ####---------------------Configuração da parte de exclusão do arquivo intermediário em .txt---------------------####
+
+    # ---------------------Configuração da parte de exclusão do arquivo intermediário em .txt---------------------
     exclusao = parser.add_argument_group(
         "Exclusão do arquivo intermediário em .txt.",
-        description="Utilize essa seção para escolher se o arquivo intermediário em .txt dos microdados deve ser excluído."
+        description="Utilize essa seção para escolher se o arquivo intermediário"
+                    " em .txt dos microdados deve ser excluído.",
+        gooey_options={"show_border": True}
     )
 
     # Mensagens de ajuda
@@ -737,10 +831,10 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
 
     # Criação do campo para entrada — parte para excluir o arquivo intermediário em .txt
     exclusao.add_argument(
-        "--Excluir", help=msg_excluir, widget="Dropdown", choices=["Sim", "Não"], default="Sim"
+        "--Excluir", help=msg_excluir, widget="BlockCheckbox", action="store_true"
     )
-    
-# Retorno dos argumentos obtidos
+
+    # Retorno dos argumentos obtidos
     args = parser.parse_args()
     return args
 
@@ -748,80 +842,92 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
 # Código para execução do programa
 
 args = loop_programa()
-
 print("Esquentando as caldeiras...")
 
-####---------------------Parte da extração de dados---------------------####
+# ---------------------Parte da extração de dados---------------------
 
 # Definição do arquivo escolhido pelo usuário e obtenção dos nomes para transferência
 mes, ano = args.Escolher.split("-")
 periodo_escolhido = ano + MESES_INV[mes]
 diretorio_download, nome_arquivo_ftp = criar_caminhos(periodo_escolhido)
 
-# Abertura do arquivo local
+# Checar se o arquivo .txt já não existe no diretório informado
 local_salvar = args.Salvar
-arquivo_local = open(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z", "wb")
+if os.path.isfile(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt"):
+    print(
+        f"\nARQUIVO CAGEDMOV{periodo_escolhido}.txt JÁ EXISTENTE. PULANDO A ETAPA DE DOWNLOAD.")
+else:
+    # Abertura do arquivo local
+    arquivo_local = open(local_salvar + "/CAGEDMOV" +
+                         periodo_escolhido + ".7z", "wb")
 
-# Conexão com o servidor FTP para determinar o tamanho do arquivo
-ftp = FTP(SERVER)
-ftp.login()
-ftp.cwd(diretorio_download)
-tamanho = ftp.size(nome_arquivo_ftp)
-ftp.close()
+    # Conexão com o servidor FTP para determinar o tamanho do arquivo
+    ftp = FTP(SERVER)
+    ftp.login()
+    ftp.cwd(diretorio_download)
+    tamanho = ftp.size(nome_arquivo_ftp)
+    ftp.close()
 
-# Variáveis para a barra de progresso da transferência
-progresso = 0
-n = 0
+    # Variáveis para a barra de progresso da transferência
+    progresso = 0
+    n = 0
 
-# Download do arquivo
-print("\n\n--------------------EXTRAÇÃO DOS DADOS--------------------")
-baixar_arquivo(periodo_escolhido, diretorio_download, nome_arquivo_ftp, local_salvar)
+    # Download do arquivo
+    print("\n\nEXTRAÇÃO DOS DADOS")
+    baixar_arquivo(periodo_escolhido, diretorio_download,
+                   nome_arquivo_ftp, local_salvar)
 
-####---------------------Parte do tratamento dos dados---------------------####
+# ---------------------Parte do tratamento dos dados---------------------
 
 # Checando e realizando a limpeza dos dados, deixando referente apenas ao Turismo se necessário
-if args.Transformar == "Sim":
+if args.Transformar:
     turismo = args.Turismo
-    print("\n\n--------------------TRATAMENTO DOS DADOS--------------------")
+    print("\n\nTRATAMENTO DOS DADOS")
     criar_df_categorias()
     dados_caged = importar_caged(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt", criar_df_categorias(),
                                  turismo)
     df_recodificado = recodificar_dummies(dados_caged, turismo)
     df_agregado = agregar_resultados(df_recodificado, turismo)
-    df_agregado_final = lidar_NAs(df_agregado, turismo)
+    df_agregado_final = lidar_na(df_agregado, turismo)
     print(f"\nExportando os dados trabalhados")
-    if turismo == "Sim":
+    if turismo:
         try:
-            print(f"\nCaminho para salvar: {local_salvar}\Dados trabalhados - NOVO CAGED - Turismo - JP - {periodo_escolhido}.xlsx")
-            df_agregado_final.to_excel(local_salvar + "/Dados trabalhados - NOVO CAGED - Turismo - JP - " + periodo_escolhido + ".xlsx",
-                                       index=False)
-            print(f"\n\nARQUIVO FINAL .xlsx EXPORTADO COM SUCESSO.")
+            print(
+                f"\nCaminho para salvar: {local_salvar}\\Dados trabalhados - NOVO CAGED"
+                f" - Turismo - JP - {periodo_escolhido}.xlsx")
+            df_agregado_final.to_excel(
+                local_salvar + "/Dados trabalhados - NOVO CAGED - Turismo - JP - " +
+                periodo_escolhido + ".xlsx",
+                index=False)
+            print("ARQUIVO FINAL .xlsx EXPORTADO COM SUCESSO.")
         except Exception as e:
             print(f"\nErro durante a exportação do arquivo: {e}")
     else:
         try:
-            print(f"\nCaminho para salvar: {local_salvar}\Dados trabalhados - NOVO CAGED - {periodo_escolhido}.xlsx")
-            df_agregado_final.to_excel(local_salvar + "/Dados trabalhados - NOVO CAGED - " + periodo_escolhido + ".xlsx",
-                                       index=False)
-            print(f"\n\nARQUIVO FINAL .xlsx EXPORTADO COM SUCESSO.")
+            print(
+                f"\nCaminho para salvar: {local_salvar}\\Dados trabalhados - NOVO CAGED - {periodo_escolhido}.xlsx")
+            df_agregado_final.to_excel(
+                local_salvar + "/Dados trabalhados - NOVO CAGED - " + periodo_escolhido + ".xlsx",
+                index=False)
+            print("ARQUIVO FINAL .xlsx EXPORTADO COM SUCESSO.")
         except Exception as e:
             print(f"\nErro durante a exportação do arquivo: {e}")
 
-    ####---------------------Parte da plotagem dos gráficos---------------------####
+    # ---------------------Parte da plotagem dos gráficos---------------------
 
     local_exportar = args.Exportar
-
-    if args.Plotar == "Sim" and args.Turismo == "Sim":
-        print("\n\n--------------------CRIANDO E SALVANDO AS SÍNTESES GRÁFICAS DAS INFORMAÇÕES--------------------")
+    if args.Plotar and args.Turismo:
+        print("\n\nCRIANDO E SALVANDO AS SÍNTESES GRÁFICAS DAS INFORMAÇÕES")
         plotar_resultados(df_agregado_final, local_exportar)
 
-    ####---------------------Parte da exclusão do arquivo intermediário em .txt---------------------####
+# ---------------------Parte da exclusão do arquivo intermediário em .txt---------------------
 
-if args.Excluir == "Sim":
-    print("\n\n--------------------EXCLUINDO ARQUIVO INTERMEDIÁRIO EM .txt--------------------")
+if args.Excluir:
+    print("\n\nEXCLUINDO ARQUIVO INTERMEDIÁRIO EM .txt")
     try:
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt")
-        print(f"\nArquivo {local_salvar}/CAGEDMOV{periodo_escolhido}.txt excluído com sucesso.")
+        print(
+            f"\nArquivo {local_salvar}/CAGEDMOV{periodo_escolhido}.txt excluído com sucesso.")
     except Exception as e:
         print(f"\nFalha na exclusão do arquivo. Erro: {e}")
 

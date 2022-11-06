@@ -24,6 +24,7 @@
   "open_files": "Abrir arquivos",
   "optional_args_msg": "Argumentos Opcionais",
   "required_args_msg": "Argumentos Obrigatórios",
+  "dropdown.no_matches": "Nenhuma correspondência encontrada.",
   "restart": "Reiniciar",
   "running_msg": "Aproveite para conhecer mais sobre o LABIMEC visitando o site disponível nas informações do programa.",
   "running_title": "Em Execução",
