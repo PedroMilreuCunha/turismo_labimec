@@ -133,7 +133,7 @@ Exemplos dos resultados:
   
   2. Desligamentos:
   
-  ![](figs_readme/ex_desligamentos.svg)
+  ![](figs_readme/ex_desligamento.svg)
   
   3. Saldo:
   
