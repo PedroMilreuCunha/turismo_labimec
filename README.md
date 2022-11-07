@@ -140,6 +140,12 @@ Assumindo que o interpretador de Python já esteja instalado em seu computador, 
 
 **************************************************************************************************************************************************************
 
+**Atualizações**
+
+Possíveis novas funcionalidades do programa pode ser encontradas no arquivo `TODO.md`. Fiquem à vontade para contribuir!
+
+**************************************************************************************************************************************************************
+
 **Organização**
 
 O Laboratório de Inteligência Artificial e Macroeconomia Computacional ([LABIMEC](https://www.ufpb.br/labimec)), da Universidade Federal da Paraíba (UFPB), foi fundado no ano de 2018 e, desde então, vem realizando pesquisas voltadas para a análise de políticas macroeconômicas.
@@ -155,4 +161,4 @@ _Pedro Milreu Cunha - Doutorando em Economia Aplicada pelo PPGE-UFPB e pesquisad
 através do e-mail pcunha.2107@gmail.com.
 
 **************************************************************************************************************************************************************
-  
+ 
