@@ -90,7 +90,7 @@ e foram agrupadas nas seguintes **categorias**:
  
  ![Visualização dos resultados](Visualização.png)
 
- Utilizar essa seção para marcar se os gráficos-síntese dos resultados devem ser elaborados e exportados e escolher a pasta de destino. São eles (todos gráficos de barra):
+ Utilizar essa seção para marcar se os gráficos-síntese dos resultados devem ser elaborados e exportados e escolher a pasta de destino. São eles (todos gráficos de barra), cada um sendo plotado para admissões, desligamentos e todas as movimentações agregadas:
 
 **************************************************************************************************************************************************************
   1. Salário médio por categoria
@@ -120,7 +120,8 @@ e foram agrupadas nas seguintes **categorias**:
   13. Saldo de movimentações por categoria, escolaridade e raça/cor
   
   14. Saldo de movimentações por categoria, sexo e raça/cor
-    
+
+
 **IMPORTANTE: DISPONÍVEL APENAS PARA OS DADOS DO TURISMO DE JOÃO PESSOA**, ou seja, para que essa opção funcione é necessário que se escolha "Sim" na opção de analisar especificamente o turismo em João Pessoa e que se forneça a pasta destino das exportações.
 
   **************************************************************************************************************************************************************
@@ -130,16 +131,20 @@ e foram agrupadas nas seguintes **categorias**:
  ![Exclusão do arquivo intermediário](Exclusão.png)
  
  Utilizar essa seção para escolher se o arquivo intermediário em .txt dos microdados deve ser excluído.
-   
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+**************************************************************************************************************************************************************
 
 **Dependências**
 
 Assumindo que o interpretador de Python já esteja instalado em seu computador, utilize o comando `pip install -r requirements.txt` para instalar as dependências necessárias para o funcionamento do programa.
 
+**************************************************************************************************************************************************************
+
 **Organização**
 
 O Laboratório de Inteligência Artificial e Macroeconomia Computacional ([LABIMEC](https://www.ufpb.br/labimec)), da Universidade Federal da Paraíba (UFPB), foi fundado no ano de 2018 e, desde então, vem realizando pesquisas voltadas para a análise de políticas macroeconômicas.
+
+**************************************************************************************************************************************************************
 
 **Contato**
 
@@ -149,4 +154,5 @@ _Pedro Milreu Cunha - Doutorando em Economia Aplicada pelo PPGE-UFPB e pesquisad
     
 através do e-mail pcunha.2107@gmail.com.
 
+**************************************************************************************************************************************************************
   

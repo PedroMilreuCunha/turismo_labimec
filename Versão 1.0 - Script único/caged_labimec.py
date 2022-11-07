@@ -87,7 +87,7 @@ plt.rcParams["font.family"] = "serif"
 plt.rcParams["font.serif"] = ["DejaVu Sans"]
 
 
-# FUNÇÕES
+# Funções
 
 # ---------------------Parte da extração dos dados---------------------
 
