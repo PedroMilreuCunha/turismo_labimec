@@ -1,6 +1,4 @@
 # Pacotes necessários
-import functools
-from ftplib import FTP
 import os
 
 from gooey import Gooey, GooeyParser
@@ -15,14 +13,16 @@ MESES = {"01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05"
          "07": "Julho", "08": "Agosto", "09": "Setembro", "10": "Outubro", "11": "Novembro", "12": "Dezembro"}
 MESES_INV = dict((v, k) for k, v in MESES.items())
 
-@Gooey(dump_build_config=False, richtext_controls=True, clear_before_run=True,
+
+@Gooey(dump_build_config=False, monospace_display=True, clear_before_run=True, disable_progress_bar_animation=True,
        program_name="Utilitário para extração, leitura e tratamento de"
                     " microdados do NOVO CAGED sobre turismo - LABIMEC",
        language="portuguese", default_size=(1000, 600), image_dir="figs", language_dir="lang",
        show_restart_button=False,
        timing_options={
-           "show_time_remaining": True,
-           "hide_time_remaining_on_complete": True},
+           'show_time_remaining':True,
+           'hide_time_remaining_on_complete':True
+       },
        menu=[{
            "name": "Informações",
            "items": [{
@@ -73,9 +73,9 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
     arquivos_disponiveis = obter_diretorios_caged()
     visualizacao_arquivos_disponiveis = []
     for i in arquivos_disponiveis:
-        mes = i[-2:]
-        ano = i[0:4]
-        visualizacao_arquivos_disponiveis.append(MESES[mes] + "-" + ano)
+        m = i[-2:]
+        a = i[0:4]
+        visualizacao_arquivos_disponiveis.append(MESES[m] + "-" + a)
 
     # Criação dos campos para entrada — parte da extração dos dados
     extracao.add_argument(
@@ -154,14 +154,14 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
     )
 
     # Retorno dos argumentos obtidos
-    args = parser.parse_args()
-    return args
+    a = parser.parse_args()
+    return a
 
 
 # Código para execução do programa
 
 args = loop_programa()
-print("Esquentando as caldeiras...")
+print("ESQUENTANDO AS CALDEIRAS...")
 
 # Parte da extração de dados
 
@@ -170,20 +170,12 @@ mes, ano = args.Escolher.split("-")
 periodo_escolhido = ano + MESES_INV[mes]
 diretorio_download, nome_arquivo_ftp = criar_caminhos(periodo_escolhido)
 
-# Checar se o arquivo .txt já não existe no diretório informado
+# Checar se o arquivo txt já não existe no diretório informado
 local_salvar = args.Salvar
 if os.path.isfile(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt"):
     print(
         f"\nARQUIVO CAGEDMOV{periodo_escolhido}.txt JÁ EXISTENTE. PULANDO A ETAPA DE DOWNLOAD.")
 else:
-    # Variáveis para a barra de progresso da transferência
-    progresso = 0
-    n = 0
-    ftp = FTP(SERVER)
-    ftp.login()
-    ftp.cwd(diretorio_download)
-    tamanho = ftp.size(nome_arquivo_ftp)
-    ftp.close()
     # Download do arquivo
     print("\nDOWNLOAD DOS DADOS")
     baixar_arquivo(periodo_escolhido, diretorio_download,
@@ -206,24 +198,24 @@ if args.Transformar:
         try:
             print(
                 f"\nCaminho para salvar: {local_salvar}\\Dados trabalhados - NOVO CAGED"
-                f" - Turismo - JP - {periodo_escolhido}.xlsx")
+                f" - Turismo - JP - {periodo_escolhido}.xlsx\n")
             df_agregado_final.to_excel(
                 local_salvar + "/Dados trabalhados - NOVO CAGED - Turismo - JP - " +
                 periodo_escolhido + ".xlsx",
                 index=False)
-            print("ARQUIVO FINAL .xlsx EXPORTADO COM SUCESSO.")
+            print("Arquivo final .xlsx exportado com sucesso.")
         except Exception as e:
-            print(f"\nErro durante a exportação do arquivo: {e}")
+            print(f"\nERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: {e}")
     else:
         try:
             print(
-                f"\nCaminho para salvar: {local_salvar}\\Dados trabalhados - NOVO CAGED - {periodo_escolhido}.xlsx")
+                f"\nCaminho para salvar: {local_salvar}\\Dados trabalhados - NOVO CAGED - {periodo_escolhido}.xlsx\n")
             df_agregado_final.to_excel(
                 local_salvar + "/Dados trabalhados - NOVO CAGED - " + periodo_escolhido + ".xlsx",
                 index=False)
-            print("ARQUIVO FINAL .xlsx EXPORTADO COM SUCESSO.")
+            print("Arquivo final .xlsx exportado com sucesso.")
         except Exception as e:
-            print(f"\nErro durante a exportação do arquivo: {e}")
+            print(f"\nERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: {e}")
 
     # Parte da plotagem dos gráficos
 
@@ -238,11 +230,10 @@ if args.Excluir:
     print("\nEXCLUINDO ARQUIVO INTERMEDIÁRIO EM .txt")
     try:
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt")
-        print(
-            f"\nArquivo {local_salvar}/CAGEDMOV{periodo_escolhido}.txt excluído com sucesso.\n\n"
-            f"ENCERRANDO O PROGRAMA...PODE DEMORAR UM POUCO.")
+        print(f"\nArquivo {local_salvar}/CAGEDMOV{periodo_escolhido}.txt excluído com sucesso.\n\n")
     except Exception as e:
-        print(f"\nFalha na exclusão do arquivo. Erro: {e}")
+        print(f"\nFALHA NA EXCLUSÃO DO ARQUIVO. Erro: {e}\n\n")
 
 if __name__ == "__main__":
     loop_programa()
+    print("ENCERRANDO O PROGRAMA...PODE DEMORAR UM POUCO.")

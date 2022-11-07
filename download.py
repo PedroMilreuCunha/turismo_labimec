@@ -1,9 +1,7 @@
 # Pacotes necessários
 import os
-import time
 from datetime import date
 from ftplib import FTP
-
 
 import py7zr
 from tqdm import tqdm
@@ -13,7 +11,6 @@ SERVER = "ftp.mtps.gov.br"
 MESES = {"01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05": "Maio", "06": "Junho",
          "07": "Julho", "08": "Agosto", "09": "Setembro", "10": "Outubro", "11": "Novembro", "12": "Dezembro"}
 MESES_INV = dict((v, k) for k, v in MESES.items())
-
 
 # Funções
 def obter_diretorios_caged() -> list:
@@ -65,29 +62,30 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
     ftp = FTP(SERVER)
     ftp.login()
     ftp.cwd(diretorio_download)
-    atual = [0, ]
     total = ftp.size(nome_arquivo)
 
-    # Função de download modificada para gerar uma barra de progresso - baseado em https://www.cnblogs.com/frost-hit/p/6669227.html
-    print(f"\nBaixando o arquivo {nome_arquivo}.\n")
-    t0 = time.time()
-    pbar = tqdm(total=total)
+    # Função de transferência modificada para gerar uma barra de progresso -
+    # baseado em https://www.cnblogs.com/frost-hit/p/6669227.html
+    print(f"\nBaixando o arquivo {nome_arquivo}.")
+    pbar = tqdm(total=total, desc="Progresso da transferência",
+                bar_format='{elapsed} < {remaining} | {percentage:0.2f}%, {rate_fmt}|',
+                dynamic_ncols=True, position=0,
+                unit='B', unit_scale=True, unit_divisor=1000)
 
-    def bar(dados: float) -> None:
+    def bar(dados: bytes) -> None:
         """
 
-        :type dados: float
+        :type dados: bytes
         """
         arquivo_local.write(dados)
         pbar.update(len(dados))
-
+        pbar.write(f"{pbar}")
     try:
         ftp.retrbinary("RETR " + nome_arquivo,
-                       bar, 1024)
+                       bar, 81920)
         pbar.close()
         ftp.close()
         arquivo_local.close()
-        print(f"\nARQUIVO TRANSFERIDO EM {round(time.time() - t0, 2)} SEGUNDOS.")
     except Exception as e:
         print(f"\nERRO DURANTE A TRANSFERÊNCIA: {e}. O arquivo corrompido será excluído.")
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z")
@@ -97,8 +95,7 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
         py7zr.SevenZipFile(local_salvar + "/CAGEDMOV" +
                            periodo_escolhido + ".7z", "r").extractall(local_salvar)
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z")
-        print(f"\nARQUIVO FINAL .txt EXTRAÍDO COM SUCESSO.")
+        print(f"\nArquivo final .txt extraído com sucesso.")
     except Exception as e:
         print(
             f"\nERRO DURANTE A EXTRAÇÃO DO ARQUIVO: {e}\nA versão em .7z foi mantida.")
-

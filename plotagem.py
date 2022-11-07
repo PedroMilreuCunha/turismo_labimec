@@ -6,14 +6,15 @@ import os
 
 # Parâmetros gráficos
 sns.set(style="white")
-plt.rcParams["figure.dpi"] = 400
+plt.rcParams["figure.dpi"] = 300
 plt.rcParams["figure.figsize"] = [10, 8]
 plt.rcParams["figure.autolayout"] = True
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["font.serif"] = ["DejaVu Sans"]
 
-
 # Funções
+
+
 def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -> None:
     """
 
@@ -46,6 +47,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             plt.xlabel("Salário médio (R$)", size=14)
             plt.xlim((0, 2300))
             plt.tick_params(axis="both", which="major", labelsize=14)
+            plt.minorticks_off()
             g1.set(ylabel=None)
             sns.despine()
 
@@ -72,6 +74,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             sns.despine()
 
             plt.xlabel("Salário médio (R$)", size=14)
+            plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_escolaridade" +
                         ".svg", pad_inches=0.05, bbox_inches="tight")
             plt.close()
@@ -94,6 +97,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             g3.set(ylabel=None)
             sns.despine()
             plt.xlabel("Salário médio (R$)", size=14)
+            plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_sexo" +
                         ".svg", pad_inches=0.05, bbox_inches="tight")
             plt.close()
@@ -119,6 +123,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             sns.despine()
             plt.margins(x=0.2)
             plt.xlabel("Salário médio (R$)", size=14)
+            plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_raca" +
                         ".svg", pad_inches=0.05, bbox_inches="tight")
             plt.close()
@@ -144,6 +149,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
                     ax.margins(x=0.1, y=0.01)
                 g5.set(ylabel=None)
                 sns.despine()
+            plt.minorticks_off()
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_categoria_escolaridade_sexo" +
                 ".svg", pad_inches=0.05, bbox_inches="tight")
@@ -170,6 +176,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
                     ax.margins(x=0.1, y=0.01)
                 g6.set(ylabel=None)
                 sns.despine()
+            plt.minorticks_off()
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_categoria_escolaridade_raca" +
                 ".svg", pad_inches=0.05, bbox_inches="tight")
@@ -195,6 +202,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
                     ax.margins(x=0.1, y=0.01)
                 g7.set(ylabel=None)
                 sns.despine()
+            plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_categoria_sexo_raca" +
                         ".svg", pad_inches=0.05, bbox_inches="tight")
             plt.close()
@@ -217,6 +225,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             plt.tick_params(axis="both", which="major", labelsize=12)
             g8.set(ylabel=None)
             sns.despine()
+            plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_categoria" +
                         ".svg", pad_inches=0.05, bbox_inches="tight")
             plt.close()
@@ -239,6 +248,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             sns.despine()
             plt.xlabel("Saldo de movimentações", size=14)
             plt.margins(x=0.2)
+            plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_escolaridade" +
                         ".svg", pad_inches=0.05, bbox_inches="tight")
             plt.close()
@@ -261,6 +271,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             sns.despine()
             plt.xlabel("Saldo de movimentações", size=14)
             plt.margins(x=0.2)
+            plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_sexo" +
                         ".svg", pad_inches=0.05, bbox_inches="tight")
             plt.close()
@@ -283,6 +294,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             sns.despine()
             plt.margins(x=0.2)
             plt.xlabel("Saldo de movimentações", size=14)
+            plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_raca" +
                         ".svg", pad_inches=0.05, bbox_inches="tight")
             plt.close()
@@ -307,6 +319,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
                         ax.bar_label(c, labels=labels, label_type="edge")
                     ax.margins(x=0.1, y=0.01)
                 g12.set(ylabel=None)
+            plt.minorticks_off()
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[
                     i] + "/saldo_movimentacoes_por_categoria_escolaridade_sexo" +
@@ -333,6 +346,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
                         ax.bar_label(c, labels=labels, label_type="edge")
                     ax.margins(x=0.1, y=0.01)
                 g13.set(ylabel=None)
+            plt.minorticks_off()
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[
                     i] + "/saldo_movimentacoes_por_categoria_escolaridade_raca" +
@@ -358,6 +372,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
                         ax.bar_label(c, labels=labels, label_type="edge")
                     ax.margins(x=0.1, y=0.01)
                 g14.set(ylabel=None)
+            plt.minorticks_off()
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_categoria_sexo_raca" +
                 ".svg", pad_inches=0.05, bbox_inches="tight")
