@@ -1,4 +1,4 @@
-# LABIMEC - NOVO CAGED &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![](Labimec.png) &nbsp;  ![](Pessoal.png)
+# LABIMEC - NOVO CAGED &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![](figs_readme/Labimec.png) &nbsp;  ![](figs_readme/Pessoal.png)
 
 Um programa do Laboratório de Inteligência Artificial e Macroeconomia Computacional (LAEC) e desenvolvido por mim, Pedro Milreu Cunha, pesquisador do LABIMEC.
 
@@ -6,7 +6,7 @@ Um programa do Laboratório de Inteligência Artificial e Macroeconomia Computac
 
 Aplicativo para extração dos microdados do NOVO CAGED (2020-) e análise do setor de turismo em João Pessoa utilizando FTP e Gooey.
 
-![Visão do programa](Programa.png)
+![Visão do programa](figs_readme/Programa.png)
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -14,13 +14,13 @@ O programa é dividido em quatro seções:
  
  1. **Download e extração dos dados**:
  
-  ![Download e extração dos dados](Extração.png)
+  ![Download e extração dos dados](figs_readme/Extração.png)
  
   Utilizar esses campos para escolher o arquivo desejado do servidor FTP e a pasta onde deseja salvá-lo.
    
  2. **Transformação dos dados**:
  
-  ![Transformação dos dados](Transformação.png)
+  ![Transformação dos dados](figs_readme/Transformação.png)
  
   Utilizar esses campos para marcar se deseja realizar uma limpeza e agregação dos dados e, também, se deve ser feita uma análise especificamente para o setor de turismo de João Pessoa. 
   
@@ -88,7 +88,7 @@ e foram agrupadas nas seguintes **categorias**:
   
  3. **Visualização dos dados**:
  
- ![Visualização dos resultados](Visualização.png)
+ ![Visualização dos resultados](figs_readme/Visualização.png)
 
  Utilizar essa seção para marcar se os gráficos-síntese dos resultados devem ser elaborados e exportados e escolher a pasta de destino. São eles (todos gráficos de barra), cada um sendo plotado para admissões, desligamentos e todas as movimentações agregadas:
 
@@ -124,11 +124,25 @@ e foram agrupadas nas seguintes **categorias**:
 
 **IMPORTANTE: DISPONÍVEL APENAS PARA OS DADOS DO TURISMO DE JOÃO PESSOA**, ou seja, para que essa opção funcione é necessário que se escolha "Sim" na opção de analisar especificamente o turismo em João Pessoa e que se forneça a pasta destino das exportações.
 
+Exemplos dos resultados:
+
+  1. Admissões:
+  
+  ![](figs_readme/ex_admissão.svg)
+  
+  2. Desligamentos:
+  
+  ![](figs_readme/ex_desligamentos.svg)
+  
+  3. Saldo:
+  
+  ![](figs_readme/ex_ambos.svg)
+
   **************************************************************************************************************************************************************
  
  4. **Exclusão do arquivo intermediario em .txt**:
  
- ![Exclusão do arquivo intermediário](Exclusão.png)
+ ![Exclusão do arquivo intermediário](figs_readme/Exclusão.png)
  
  Utilizar essa seção para escolher se o arquivo intermediário em .txt dos microdados deve ser excluído.
 
