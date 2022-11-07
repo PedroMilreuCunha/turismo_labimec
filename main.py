@@ -1,4 +1,5 @@
 # Pacotes necessários
+import functools
 from ftplib import FTP
 import os
 
@@ -14,11 +15,10 @@ MESES = {"01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05"
          "07": "Julho", "08": "Agosto", "09": "Setembro", "10": "Outubro", "11": "Novembro", "12": "Dezembro"}
 MESES_INV = dict((v, k) for k, v in MESES.items())
 
-
 @Gooey(dump_build_config=False, richtext_controls=True, clear_before_run=True,
        program_name="Utilitário para extração, leitura e tratamento de"
                     " microdados do NOVO CAGED sobre turismo - LABIMEC",
-       language="portuguese", default_size=(1024, 800), image_dir="figs", language_dir="lang",
+       language="portuguese", default_size=(1000, 600), image_dir="figs", language_dir="lang",
        show_restart_button=False,
        timing_options={
            "show_time_remaining": True,
@@ -187,7 +187,7 @@ else:
     # Download do arquivo
     print("\nDOWNLOAD DOS DADOS")
     baixar_arquivo(periodo_escolhido, diretorio_download,
-                   nome_arquivo_ftp, local_salvar, progresso, n, tamanho)
+                   nome_arquivo_ftp, local_salvar)
 
 # Parte do tratamento dos dados
 
@@ -239,7 +239,8 @@ if args.Excluir:
     try:
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt")
         print(
-            f"\nArquivo {local_salvar}/CAGEDMOV{periodo_escolhido}.txt excluído com sucesso.")
+            f"\nArquivo {local_salvar}/CAGEDMOV{periodo_escolhido}.txt excluído com sucesso.\n\n"
+            f"ENCERRANDO O PROGRAMA...PODE DEMORAR UM POUCO.")
     except Exception as e:
         print(f"\nFalha na exclusão do arquivo. Erro: {e}")
 

@@ -1,16 +1,19 @@
 # Pacotes necessários
-from ftplib import FTP
-from datetime import date
 import os
+import time
+from datetime import date
+from ftplib import FTP
+
 
 import py7zr
-import time
+from tqdm import tqdm
 
 # DECLARAÇÃO DE CONSTANTES
 SERVER = "ftp.mtps.gov.br"
 MESES = {"01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05": "Maio", "06": "Junho",
          "07": "Julho", "08": "Agosto", "09": "Setembro", "10": "Outubro", "11": "Novembro", "12": "Dezembro"}
 MESES_INV = dict((v, k) for k, v in MESES.items())
+
 
 # Funções
 def obter_diretorios_caged() -> list:
@@ -30,6 +33,7 @@ def obter_diretorios_caged() -> list:
     ftp.close()
     return arquivos_disponiveis
 
+
 def criar_caminhos(opcao_escolhida: str) -> tuple:
     """
 
@@ -44,8 +48,8 @@ def criar_caminhos(opcao_escolhida: str) -> tuple:
     print(f"\nDiretório e nome do arquivo selecionado: \t{c}")
     return c
 
-def baixar_arquivo(periodo_escolhido: str, diretorio_download: str , nome_arquivo: str, local_salvar: str,
-                   progresso: float, n: float, tamanho: float) -> None:
+
+def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo: str, local_salvar: str) -> None:
     """
 
     :rtype: None
@@ -53,9 +57,6 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str , nome_arquiv
     :type diretorio_download: str
     :type nome_arquivo: str
     :type local_salvar: str
-    :type progresso: float
-    :type n: float
-    :type tamanho: float
     """
     # Abertura do arquivo local
     arquivo_local = open(local_salvar + "/CAGEDMOV" +
@@ -64,16 +65,32 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str , nome_arquiv
     ftp = FTP(SERVER)
     ftp.login()
     ftp.cwd(diretorio_download)
+    atual = [0, ]
+    total = ftp.size(nome_arquivo)
+
+    # Função de download modificada para gerar uma barra de progresso - baseado em https://www.cnblogs.com/frost-hit/p/6669227.html
     print(f"\nBaixando o arquivo {nome_arquivo}.\n")
     t0 = time.time()
+    pbar = tqdm(total=total)
+
+    def bar(dados: float) -> None:
+        """
+
+        :type dados: float
+        """
+        arquivo_local.write(dados)
+        pbar.update(len(dados))
+
     try:
         ftp.retrbinary("RETR " + nome_arquivo,
-                       arquivo_local.write)
-        print(f"\nARQUIVO TRANSFERIDO EM {round(time.time() - t0, 2)} SEGUNDOS.")
+                       bar, 1024)
+        pbar.close()
         ftp.close()
         arquivo_local.close()
+        print(f"\nARQUIVO TRANSFERIDO EM {round(time.time() - t0, 2)} SEGUNDOS.")
     except Exception as e:
-        print(f"\nERRO DURANTE A TRANSFERÊNCIA: {e}")
+        print(f"\nERRO DURANTE A TRANSFERÊNCIA: {e}. O arquivo corrompido será excluído.")
+        os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z")
     print(f"\nIniciando extração e remoção do arquivo comprimido intermediário.")
     print(f"\nCaminho para salvar: {local_salvar}\\CAGEDMOV{periodo_escolhido}.txt")
     try:
@@ -85,17 +102,3 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str , nome_arquiv
         print(
             f"\nERRO DURANTE A EXTRAÇÃO DO ARQUIVO: {e}\nA versão em .7z foi mantida.")
 
-def escrever_arquivo(dados):
-    """
-    Função de escrita em arquivo local alterada para mostrar o progresso da transferência dos arquivos via FTP
-    """
-    global arquivo_local
-    global progresso
-    global n
-    global tamanho
-    arquivo_local.write(dados)
-    progresso += len(dados)
-    n += 1
-    t = 100 * progresso / tamanho
-    if n % 200 == 0:
-        print(f"{t:.2f}%,")

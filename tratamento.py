@@ -1,7 +1,7 @@
 # Pacotes necessários
 # !pip install openpyxl
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 # DECLARAÇÃO DE CONSTANTES
 SUBCLASSES_TURISMO = pd.DataFrame(data={"Subclasse":
@@ -225,4 +225,3 @@ def lidar_na(df_agregado: pd.DataFrame, periodo_escolhido: str, turismo: bool) -
                                           "graudeinstrução": "Escolaridade", "raçacor": "Raça/Cor",
                                           "sexo": "Sexo"}, inplace=True)
     return df_agregado_final
-
