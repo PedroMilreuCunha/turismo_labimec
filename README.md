@@ -124,6 +124,7 @@ e foram agrupadas nas seguintes **categorias**:
 
 **IMPORTANTE: DISPONÍVEL APENAS PARA OS DADOS DO TURISMO DE JOÃO PESSOA**, ou seja, para que essa opção funcione é necessário que se escolha "Sim" na opção de analisar especificamente o turismo em João Pessoa e que se forneça a pasta destino das exportações.
 
+**************************************************************************************************************************************************************
 Exemplos dos resultados:
 
   1. Admissões:
@@ -138,7 +139,7 @@ Exemplos dos resultados:
   
   ![](figs_readme/ex_ambos.svg)
 
-  **************************************************************************************************************************************************************
+**************************************************************************************************************************************************************
  
  4. **Exclusão do arquivo intermediario em .txt**:
  
