@@ -3,6 +3,7 @@ import os
 
 from gooey import Gooey, GooeyParser
 from colored import stylize, fg, attr, set_tty_aware
+
 from download import obter_diretorios_caged, criar_caminhos, baixar_arquivo
 from tratamento import criar_df_categorias, importar_caged, recodificar_dummies, agregar_resultados, lidar_na
 from plotagem import plotar_resultados
@@ -60,9 +61,9 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
     # Configuração da parte de transferência e extração dos dados do NOVO CAGED
     extracao = parser.add_argument_group(
         "Download e extração dos dados",
-        description="Utilize esses campos para escolher o arquivo desejado"
-                    " do servidor FTP e a pasta onde deseja salvá-lo.",
-        gooey_options={"show_border": True, "margin": 10, "label_color": "#133993"}
+        description= "Utilize esses campos para escolher o arquivo desejado"
+                     " do servidor FTP e a pasta onde deseja salvá-lo.",
+        gooey_options={"show_border": True, "margin": 25}
     )
 
     # Mensagens de ajuda
@@ -96,7 +97,7 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
         "Transformação dos dados",
         description="Utilize essa seção para marcar se deseja realizar uma limpeza e agregação dos dados e, também,"
                     "se deve ser feita uma análise especificamente para o setor de turismo de João Pessoa.",
-        gooey_options={"show_border": True, "margin": 10, "label_color": "#F83300"}
+        gooey_options={"show_border": True, "margin": 25}
     )
     # Mensagens de ajuda
     msg_transformar = "Marque essa opção caso deseje que os dados sejam" \
@@ -122,7 +123,7 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
                     "> SE OPTAR POR GERAR OS GRÁFICOS, NÃO DEIXE DE ESCOLHER UM DIRETÓRIO PARA SALVÁ-LOS\n\n"
                     "Utilize essa seção para escolher se os gráficos-síntese dos resultados devem ser elaborados"
                     " e exportados.",
-        gooey_options={"show_border": True, "margin": 10, "label_color": "#03FF20"}
+        gooey_options={"show_border": True, "margin": 25}
     )
 
     plotagem_radio = plotagem.add_mutually_exclusive_group(gooey_options={"title": "Criação de gráficos em .svg"})
@@ -141,7 +142,7 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
         "Exclusão do arquivo intermediário em .txt.",
         description="Utilize essa seção para escolher se o arquivo intermediário"
                     " em .txt dos microdados deve ser excluído.",
-        gooey_options={"show_border": True, "margin": 10, "label_color": "#F90000"}
+        gooey_options={"show_border": True, "margin": 25}
     )
 
     # Mensagens de ajuda
@@ -160,7 +161,8 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
 # Código para execução do programa
 
 args = loop_programa()
-print(stylize("ESQUENTANDO AS CALDEIRAS...", fg("red") + attr("bold")))
+print(stylize("ESQUENTANDO AS CALDEIRAS...\n\nPara utilizar o programa novamente basta clicar no botão"
+              "'voltar' ao final da execução.", fg("red") + attr("bold")))
 
 # Parte da extração de dados
 
