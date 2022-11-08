@@ -5,6 +5,7 @@ from ftplib import FTP
 
 import py7zr
 from tqdm import tqdm
+from colored import stylize, fg, attr
 
 # DECLARAÇÃO DE CONSTANTES
 SERVER = "ftp.mtps.gov.br"
@@ -13,6 +14,7 @@ MESES = {"01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05"
 MESES_INV = dict((v, k) for k, v in MESES.items())
 
 # Funções
+
 def obter_diretorios_caged() -> list:
     """
 
@@ -66,7 +68,7 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
 
     # Função de transferência modificada para gerar uma barra de progresso -
     # baseado em https://www.cnblogs.com/frost-hit/p/6669227.html
-    print(f"\nBaixando o arquivo {nome_arquivo}.")
+    print(stylize(f"\nBaixando o arquivo {nome_arquivo}.", attr("bold")))
     pbar = tqdm(total=total, desc="Progresso da transferência",
                 bar_format='{elapsed} < {remaining} | {percentage:0.2f}%, {rate_fmt}|',
                 dynamic_ncols=True, position=0,
@@ -87,7 +89,8 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
         ftp.close()
         arquivo_local.close()
     except Exception as e:
-        print(f"\nERRO DURANTE A TRANSFERÊNCIA: {e}. O arquivo corrompido será excluído.")
+        print(stylize(f"\nERRO DURANTE A TRANSFERÊNCIA: {e}. O arquivo corrompido será excluído.",
+                      fg("red")))
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z")
     print(f"\nIniciando extração e remoção do arquivo comprimido intermediário.")
     print(f"\nCaminho para salvar: {local_salvar}\\CAGEDMOV{periodo_escolhido}.txt")
@@ -95,7 +98,8 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
         py7zr.SevenZipFile(local_salvar + "/CAGEDMOV" +
                            periodo_escolhido + ".7z", "r").extractall(local_salvar)
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z")
-        print(f"\nArquivo final .txt extraído com sucesso.")
+        print(stylize(f"\nArquivo final .txt extraído com sucesso.", fg("green")))
     except Exception as e:
         print(
-            f"\nERRO DURANTE A EXTRAÇÃO DO ARQUIVO: {e}\nA versão em .7z foi mantida.")
+            stylize(f"\nERRO DURANTE A EXTRAÇÃO DO ARQUIVO: {e}\nA versão em .7z foi mantida.",
+                    fg("red")))

@@ -2,10 +2,12 @@
 import os
 
 from gooey import Gooey, GooeyParser
-
+from colored import stylize, fg, attr, set_tty_aware
 from download import obter_diretorios_caged, criar_caminhos, baixar_arquivo
 from tratamento import criar_df_categorias, importar_caged, recodificar_dummies, agregar_resultados, lidar_na
 from plotagem import plotar_resultados
+
+set_tty_aware(False)
 
 # DECLARAÇÃO DE CONSTANTES
 SERVER = "ftp.mtps.gov.br"
@@ -18,10 +20,10 @@ MESES_INV = dict((v, k) for k, v in MESES.items())
        program_name="Utilitário para extração, leitura e tratamento de"
                     " microdados do NOVO CAGED sobre turismo - LABIMEC",
        language="portuguese", default_size=(1000, 600), image_dir="figs", language_dir="lang",
-       show_restart_button=False,
+       show_restart_button=False, richtext_controls=True,
        timing_options={
-           'show_time_remaining':True,
-           'hide_time_remaining_on_complete':True
+           'show_time_remaining': True,
+           'hide_time_remaining_on_complete': True
        },
        menu=[{
            "name": "Informações",
@@ -81,7 +83,7 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
     extracao.add_argument(
         "Escolher", help=msg_arquivos, widget="FilterableDropdown", choices=visualizacao_arquivos_disponiveis,
         gooey_options={
-            "placeholder": "Comece a escrever o nome do mês que deseja (Janeiro, por exemplo)."}
+            "placeholder": "Comece a escrever o nome do mês que deseja para ver sugestões (Janeiro, por exemplo)."}
     )
     extracao.add_argument(
         "Salvar", help=msg_salvar, widget="DirChooser", action="store", type=str,
@@ -123,16 +125,13 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
         gooey_options={"show_border": True, "margin": 10, "label_color": "#03FF20"}
     )
 
+    plotagem_radio = plotagem.add_mutually_exclusive_group(gooey_options={"title": "Criação de gráficos em .svg"})
+
     # Mensagem de ajuda
-    msg_plotar = "Marque essa opção caso deseje que gráficos sintetizando os resultados (turismo) sejam criados."
     msg_exportar = "Selecione a pasta onde deseja salvar as visualizações gráficas dos resultados."
 
-    # Criação do campo para entrada — parte da criação dos gráficos
-    plotagem.add_argument(
-        "--Plotar", help=msg_plotar, widget="BlockCheckbox", action="store_true"
-    )
-    plotagem.add_argument(
-        "--Exportar", help=msg_exportar, widget="DirChooser", action="store", type=str,
+    plotagem_radio.add_argument(
+        "--Exportar", help=msg_exportar, widget="DirChooser", type=str,
         gooey_options={
             "placeholder": "Escolha o diretório para salvar os gráficos."}
     )
@@ -161,7 +160,7 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
 # Código para execução do programa
 
 args = loop_programa()
-print("ESQUENTANDO AS CALDEIRAS...")
+print(stylize("ESQUENTANDO AS CALDEIRAS...", fg("red") + attr("bold")))
 
 # Parte da extração de dados
 
@@ -174,10 +173,11 @@ diretorio_download, nome_arquivo_ftp = criar_caminhos(periodo_escolhido)
 local_salvar = args.Salvar
 if os.path.isfile(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt"):
     print(
-        f"\nARQUIVO CAGEDMOV{periodo_escolhido}.txt JÁ EXISTENTE. PULANDO A ETAPA DE DOWNLOAD.")
+        stylize(f"\nARQUIVO CAGEDMOV{periodo_escolhido}.txt JÁ EXISTENTE. PULANDO A ETAPA DE DOWNLOAD.",
+                fg("green")))
 else:
     # Download do arquivo
-    print("\nDOWNLOAD DOS DADOS")
+    print(stylize("\nDOWNLOAD DOS DADOS", fg("magenta")))
     baixar_arquivo(periodo_escolhido, diretorio_download,
                    nome_arquivo_ftp, local_salvar)
 
@@ -186,7 +186,7 @@ else:
 # Checando e realizando a limpeza dos dados, deixando referente apenas ao Turismo se necessário
 if args.Transformar:
     turismo = args.Turismo
-    print("\nTRATAMENTO DOS DADOS")
+    print(stylize("\nTRATAMENTO DOS DADOS", fg("magenta")))
     criar_df_categorias()
     dados_caged = importar_caged(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt", criar_df_categorias(),
                                  turismo)
@@ -203,9 +203,9 @@ if args.Transformar:
                 local_salvar + "/Dados trabalhados - NOVO CAGED - Turismo - JP - " +
                 periodo_escolhido + ".xlsx",
                 index=False)
-            print("Arquivo final .xlsx exportado com sucesso.")
+            print(stylize("Arquivo final .xlsx exportado com sucesso.", fg("green")))
         except Exception as e:
-            print(f"\nERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: {e}")
+            print(stylize(f"\nERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: {e}", fg("red")))
     else:
         try:
             print(
@@ -213,27 +213,28 @@ if args.Transformar:
             df_agregado_final.to_excel(
                 local_salvar + "/Dados trabalhados - NOVO CAGED - " + periodo_escolhido + ".xlsx",
                 index=False)
-            print("Arquivo final .xlsx exportado com sucesso.")
+            print(stylize("Arquivo final .xlsx exportado com sucesso.", fg("green")))
         except Exception as e:
-            print(f"\nERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: {e}")
+            print(stylize(f"\nERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: {e}", fg("red")))
 
     # Parte da plotagem dos gráficos
 
     local_exportar = args.Exportar
-    if args.Plotar and args.Turismo:
-        print("\nCRIANDO E SALVANDO AS SÍNTESES GRÁFICAS DAS INFORMAÇÕES")
+    if args.Exportar and args.Turismo:
+        print(stylize("\nCRIANDO E SALVANDO AS SÍNTESES GRÁFICAS DAS INFORMAÇÕES", fg("magenta")))
         plotar_resultados(df_agregado_final, periodo_escolhido, local_exportar)
 
 # Parte da exclusão do arquivo intermediário em .txt
 
 if args.Excluir:
-    print("\nEXCLUINDO ARQUIVO INTERMEDIÁRIO EM .txt")
+    print(stylize("\nEXCLUINDO ARQUIVO INTERMEDIÁRIO EM .txt", fg("magenta")))
     try:
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt")
-        print(f"\nArquivo {local_salvar}/CAGEDMOV{periodo_escolhido}.txt excluído com sucesso.\n\n")
+        print(stylize(f"\nArquivo {local_salvar}/CAGEDMOV{periodo_escolhido}.txt excluído com sucesso.\n\n",
+                      fg("green")))
     except Exception as e:
-        print(f"\nFALHA NA EXCLUSÃO DO ARQUIVO. Erro: {e}\n\n")
+        print(stylize(f"\nFALHA NA EXCLUSÃO DO ARQUIVO. Erro: {e}\n\n", fg("red")))
 
 if __name__ == "__main__":
     loop_programa()
-    print("ENCERRANDO O PROGRAMA...PODE DEMORAR UM POUCO.")
+    print(stylize("ENCERRANDO O PROGRAMA...PODE DEMORAR UM POUCO.", fg("magenta")))

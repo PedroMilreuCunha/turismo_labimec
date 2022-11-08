@@ -3,6 +3,8 @@
 import numpy as np
 import pandas as pd
 
+from colored import stylize, fg, attr
+
 # DECLARAÇÃO DE CONSTANTES
 SUBCLASSES_TURISMO = pd.DataFrame(data={"Subclasse":
                                             (5510801, 5510802, 5510803,  # Hóteis e similares
@@ -104,13 +106,13 @@ def importar_caged(nome_arquivo: str, df_categorias_turismo: pd.DataFrame, turis
                                                                  right_on="subclasse").reset_index()
             dados_caged = dados_caged_turismo_jp
         except Exception as e:
-            print(f"Erro durante a importação do arquivo {nome_arquivo}: {e}")
+            print(stylize(f"ERRO DURANTE A IMPORTAÇÃO DO ARQUIVO {nome_arquivo}: {e}", fg("red")))
     else:
         print(f"\nImportando os dados da CAGED e criando o pd.DataFrame com os dados")
         try:
             dados_caged = pd.read_table(nome_arquivo, decimal=",", sep=";")
         except Exception as e:
-            print(f"Erro durante a importação do arquivo {nome_arquivo}: {e}")
+            print(stylize(f"ERRO DURANTE A IMPORTAÇÃO DO ARQUIVO {nome_arquivo}: {e}", fg("red")))
 
     return dados_caged
 
