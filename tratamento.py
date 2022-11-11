@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 
+from tqdm import tqdm
 from colored import stylize, fg, attr
 
 # DECLARAÇÃO DE CONSTANTES
@@ -55,7 +56,10 @@ LAZER = (9200301, 9200302, 9200399,
          9321200,
          9329801, 9329802, 9329803, 9329804, 9329899)
 
+
 # Funções
+
+
 def criar_df_categorias() -> pd.DataFrame:
     """
 
@@ -88,9 +92,9 @@ def importar_caged(nome_arquivo: str, df_categorias_turismo: pd.DataFrame, turis
     """
 
     :rtype df_caged: pd.DataFrame
-    :type nome_arquivo: str
-    :type df_categorias_turismo: pd.DataFrame
-    :type turismo: bool
+    :param nome_arquivo: str
+    :param df_categorias_turismo: pd.DataFrame
+    :param turismo: bool
     """
     dados_caged = pd.DataFrame()
     if turismo:
@@ -98,22 +102,22 @@ def importar_caged(nome_arquivo: str, df_categorias_turismo: pd.DataFrame, turis
             f"\nImportando os dados da CAGED e criando o pd.DataFrame apenas com os dados referentes"
             f" ao turismo em João Pessoa")
         try:
-            dados_caged_turismo_jp = pd.read_table(
-                nome_arquivo, decimal=",", sep=";")
+            dados_caged_turismo_jp = pd.read_csv(nome_arquivo, decimal=",", sep=";")
             dados_caged_turismo_jp = dados_caged_turismo_jp[dados_caged_turismo_jp["município"] == 250750]
             dados_caged_turismo_jp = df_categorias_turismo.merge(dados_caged_turismo_jp, how="left",
                                                                  left_on="Subclasse",
                                                                  right_on="subclasse").reset_index()
             dados_caged = dados_caged_turismo_jp
         except Exception as e:
-            print(stylize(f"ERRO DURANTE A IMPORTAÇÃO DO ARQUIVO {nome_arquivo}: {e}", fg("red")))
+            print(stylize("ERRO DURANTE A IMPORTAÇÃO DO ARQUIVO " + nome_arquivo + ": " + str(e),
+                          fg("red") + attr("bold")))
     else:
         print(f"\nImportando os dados da CAGED e criando o pd.DataFrame com os dados")
         try:
-            dados_caged = pd.read_table(nome_arquivo, decimal=",", sep=";")
+            dados_caged = pd.read_csv(nome_arquivo, decimal=",", sep=";")
         except Exception as e:
-            print(stylize(f"ERRO DURANTE A IMPORTAÇÃO DO ARQUIVO {nome_arquivo}: {e}", fg("red")))
-
+            print(stylize("ERRO DURANTE A IMPORTAÇÃO DO ARQUIVO " + nome_arquivo + ": " + str(e),
+                          fg("red") + attr("bold")))
     return dados_caged
 
 
@@ -121,8 +125,8 @@ def recodificar_dummies(dados_caged: pd.DataFrame, turismo: bool) -> pd.DataFram
     """
 
     :rtype df_recodificado: pd.DataFrame
-    :type dados_caged: pd.DataFrame
-    :type turismo: bool
+    :param dados_caged: pd.DataFrame
+    :param turismo: bool
     """
     print(f"\nRecodificando as variáveis dummies de escolaridade, raça/cor e sexo")
     df_recodificado = pd.DataFrame.copy(dados_caged)
@@ -147,12 +151,12 @@ def recodificar_dummies(dados_caged: pd.DataFrame, turismo: bool) -> pd.DataFram
                                                    "Desligamento")
     if turismo:
         df_recodificado = df_recodificado.astype({"Categoria": "category", "graudeinstrução": "category",
-                                                  "raçacor": "category", "sexo": "category",
-                                                  "tipomovimentação": "category"})
+                                                   "raçacor": "category", "sexo": "category",
+                                                   "tipomovimentação": "category"})
     else:
         df_recodificado = df_recodificado.astype({"município": "category", "graudeinstrução": "category",
-                                                  "raçacor": "category", "sexo": "category",
-                                                  "tipomovimentação": "category"})
+                                                   "raçacor": "category", "sexo": "category",
+                                                   "tipomovimentação": "category"})
     return df_recodificado
 
 
@@ -160,8 +164,8 @@ def agregar_resultados(df_recodificado: pd.DataFrame, turismo: bool) -> pd.DataF
     """
 
     :rtype df_agregado: pd.DataFrame
-    :type df_recodificado: pd.DataFrame
-    :type turismo: bool
+    :param df_recodificado: pd.DataFrame
+    :param turismo: bool
     """
     if turismo:
         print(f"\nAgrupando os dados por categoria do turismo, tipo de movimentação, escolaridade, raça/cor e sexo")
@@ -194,9 +198,9 @@ def lidar_na(df_agregado: pd.DataFrame, periodo_escolhido: str, turismo: bool) -
     """
 
     :rtype df_agregado_final: pd.DataFrame
-    :type df_agregado: pd.DataFrame
-    :type periodo_escolhido: str
-    :type turismo: bool
+    :param df_agregado: pd.DataFrame
+    :param periodo_escolhido: str
+    :param turismo: bool
     """
     print(f"\nLidando com os dados ausentes")
     df_agregado_final = pd.DataFrame.copy(df_agregado)

@@ -4,8 +4,10 @@ from datetime import date
 from ftplib import FTP
 
 import py7zr
-from tqdm import tqdm
+from tqdm.rich import tqdm
 from colored import stylize, fg, attr
+import warnings
+warnings.filterwarnings("ignore")
 
 # DECLARAÇÃO DE CONSTANTES
 SERVER = "ftp.mtps.gov.br"
@@ -14,6 +16,7 @@ MESES = {"01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05"
 MESES_INV = dict((v, k) for k, v in MESES.items())
 
 # Funções
+
 
 def obter_diretorios_caged() -> list:
     """
@@ -44,7 +47,7 @@ def criar_caminhos(opcao_escolhida: str) -> tuple:
     nome_arquivo = "CAGEDMOV" + opcao_escolhida + ".7z"
 
     c = (diretorio, nome_arquivo)
-    print(f"\nDiretório e nome do arquivo selecionado: \t{c}")
+    print(f"Diretório e nome do arquivo selecionado: \t{c}\n")
     return c
 
 
@@ -68,20 +71,22 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
 
     # Função de transferência modificada para gerar uma barra de progresso -
     # baseado em https://www.cnblogs.com/frost-hit/p/6669227.html
-    print(stylize(f"\nBaixando o arquivo {nome_arquivo}.", attr("bold")))
-    pbar = tqdm(total=total, desc="Progresso da transferência",
-                bar_format='{elapsed} < {remaining} | {percentage:0.2f}%, {rate_fmt}|',
+    print(stylize("Baixando o arquivo " + nome_arquivo, attr("bold")))
+    pbar = tqdm(total=total, desc="",
                 dynamic_ncols=True, position=0,
                 unit='B', unit_scale=True, unit_divisor=1000)
-
     def bar(dados: bytes) -> None:
         """
 
         :type dados: bytes
         """
         arquivo_local.write(dados)
+        global n
+        n += 1
         pbar.update(len(dados))
-        pbar.write(f"{pbar}")
+        if n % 70 == 0:
+            print(stylize(pbar, fg("dark_blue")), flush=True)
+
     try:
         ftp.retrbinary("RETR " + nome_arquivo,
                        bar, 81920)
@@ -89,17 +94,19 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
         ftp.close()
         arquivo_local.close()
     except Exception as e:
-        print(stylize(f"\nERRO DURANTE A TRANSFERÊNCIA: {e}. O arquivo corrompido será excluído.",
-                      fg("red")))
+        print(stylize("ERRO DURANTE A TRANSFERÊNCIA: " + str(e) + ". O arquivo corrompido será excluído.",
+                      fg("red") + attr("bold")))
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z")
     print(f"\nIniciando extração e remoção do arquivo comprimido intermediário.")
-    print(f"\nCaminho para salvar: {local_salvar}\\CAGEDMOV{periodo_escolhido}.txt")
+    print(f"\nCaminho para salvar: {local_salvar}\\CAGEDMOV{periodo_escolhido}.txt\n")
     try:
         py7zr.SevenZipFile(local_salvar + "/CAGEDMOV" +
                            periodo_escolhido + ".7z", "r").extractall(local_salvar)
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".7z")
-        print(stylize(f"\nArquivo final .txt extraído com sucesso.", fg("green")))
+        print(stylize("Arquivo final .txt extraído com sucesso.", fg("green") + attr("bold")))
     except Exception as e:
         print(
-            stylize(f"\nERRO DURANTE A EXTRAÇÃO DO ARQUIVO: {e}\nA versão em .7z foi mantida.",
-                    fg("red")))
+            stylize("ERRO DURANTE A EXTRAÇÃO DO ARQUIVO: " + str(e) + ". A versão em .7z foi mantida.",
+                    fg("red") + attr("bold")))
+
+n = 0

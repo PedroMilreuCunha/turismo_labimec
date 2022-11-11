@@ -17,8 +17,8 @@ MESES = {"01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05"
 MESES_INV = dict((v, k) for k, v in MESES.items())
 
 
-@Gooey(dump_build_config=False, monospace_display=True, clear_before_run=True, disable_progress_bar_animation=True,
-       program_name="Utilitário para extração, leitura e tratamento de"
+@Gooey(dump_build_config=False, clear_before_run=True,
+       program_name="Utilitário para extração, leitura, tratamento e visualização de"
                     " microdados do NOVO CAGED sobre turismo - LABIMEC",
        language="portuguese", default_size=(1000, 600), image_dir="figs", language_dir="lang",
        show_restart_button=False, richtext_controls=True,
@@ -38,10 +38,10 @@ MESES_INV = dict((v, k) for k, v in MESES.items())
                               " utilizando conexões FTP e o módulo Gooey para desenvolver a GUI.",
                "version": "2.0",
                "copyright": "2022",
-               "website": "https://www.ufpb.br/labimec\nhttps://github.com/PedroMilreuCunha",
+               "website": " https://www.ufpb.br/labimec",
                "developer": "Pedro Milreu Cunha - Doutorando e Mestre em Economia"
                             " Aplicada pelo PPGE/UFPB e \nBacharel em Ciências Econômicas pela UFV"
-                            "",
+                            "\n https://github.com/PedroMilreuCunha",
                "license": "Gratuito para uso pessoal."
            }, {
                "type": "MessageDialog",
@@ -61,8 +61,8 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
     # Configuração da parte de transferência e extração dos dados do NOVO CAGED
     extracao = parser.add_argument_group(
         "Download e extração dos dados",
-        description= "Utilize esses campos para escolher o arquivo desejado"
-                     " do servidor FTP e a pasta onde deseja salvá-lo.",
+        description="Utilize esses campos para escolher o arquivo desejado"
+                    " do servidor FTP e a pasta onde deseja salvá-lo.",
         gooey_options={"show_border": True, "margin": 25}
     )
 
@@ -104,7 +104,7 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
                       " trabalhados, organizados e agregados por escolaridade," \
                       "município, raça/cor e sexo."
     msg_turismo_jp = "Marque essa opção caso deseje que os dados trabalhados" \
-                     " façam referência apenas às categoria do turismo e ao município de João Pessoa."
+                     " façam referência apenas às categorias do turismo e ao município de João Pessoa."
 
     # Criação do campo para entrada — parte do tratamento dos dados
     transformacao.add_argument(
@@ -161,9 +161,8 @@ def loop_programa():  # Função principal para obter e extrair os argumentos da
 # Código para execução do programa
 
 args = loop_programa()
-print(stylize("ESQUENTANDO AS CALDEIRAS...\n\nPara utilizar o programa novamente basta clicar no botão"
-              "'voltar' ao final da execução.", fg("red") + attr("bold")))
-
+print(stylize("Para utilizar o programa novamente basta clicar no botão"
+      " 'voltar' ao final da execução.\n", fg("red") + attr("bold")))
 # Parte da extração de dados
 
 # Definição do arquivo escolhido pelo usuário e obtenção dos nomes para transferência
@@ -174,12 +173,11 @@ diretorio_download, nome_arquivo_ftp = criar_caminhos(periodo_escolhido)
 # Checar se o arquivo txt já não existe no diretório informado
 local_salvar = args.Salvar
 if os.path.isfile(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt"):
-    print(
-        stylize(f"\nARQUIVO CAGEDMOV{periodo_escolhido}.txt JÁ EXISTENTE. PULANDO A ETAPA DE DOWNLOAD.",
-                fg("green")))
+    print(stylize("ARQUIVO CAGEDMOV" + periodo_escolhido + ".txt JÁ EXISTENTE. PULANDO A ETAPA DE DOWNLOAD.",
+          fg("green")))
 else:
     # Download do arquivo
-    print(stylize("\nDOWNLOAD DOS DADOS", fg("magenta")))
+    print(stylize("DOWNLOAD DOS DADOS", fg("magenta") + attr("bold")))
     baixar_arquivo(periodo_escolhido, diretorio_download,
                    nome_arquivo_ftp, local_salvar)
 
@@ -188,7 +186,8 @@ else:
 # Checando e realizando a limpeza dos dados, deixando referente apenas ao Turismo se necessário
 if args.Transformar:
     turismo = args.Turismo
-    print(stylize("\nTRATAMENTO DOS DADOS", fg("magenta")))
+    print()
+    print(stylize("TRATAMENTO DOS DADOS", fg("magenta") + attr("bold")))
     criar_df_categorias()
     dados_caged = importar_caged(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt", criar_df_categorias(),
                                  turismo)
@@ -205,9 +204,9 @@ if args.Transformar:
                 local_salvar + "/Dados trabalhados - NOVO CAGED - Turismo - JP - " +
                 periodo_escolhido + ".xlsx",
                 index=False)
-            print(stylize("Arquivo final .xlsx exportado com sucesso.", fg("green")))
+            print(stylize("Arquivo final .xlsx exportado com sucesso.", fg("green") + attr("bold")))
         except Exception as e:
-            print(stylize(f"\nERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: {e}", fg("red")))
+            print(stylize("ERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: " + str(e), fg("red") + attr("bold")))
     else:
         try:
             print(
@@ -215,28 +214,29 @@ if args.Transformar:
             df_agregado_final.to_excel(
                 local_salvar + "/Dados trabalhados - NOVO CAGED - " + periodo_escolhido + ".xlsx",
                 index=False)
-            print(stylize("Arquivo final .xlsx exportado com sucesso.", fg("green")))
+            print(stylize("Arquivo final .xlsx exportado com sucesso.", fg("green") + attr("bold")))
         except Exception as e:
-            print(stylize(f"\nERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: {e}", fg("red")))
+            print(stylize("ERRO DURANTE A EXPORTAÇÃO DO ARQUIVO: " + str(e), fg("red") + attr("bold")))
 
     # Parte da plotagem dos gráficos
 
     local_exportar = args.Exportar
     if args.Exportar and args.Turismo:
-        print(stylize("\nCRIANDO E SALVANDO AS SÍNTESES GRÁFICAS DAS INFORMAÇÕES", fg("magenta")))
+        print()
+        print(stylize("CRIANDO E SALVANDO AS SÍNTESES GRÁFICAS DAS INFORMAÇÕES", fg("magenta") + attr("bold")))
         plotar_resultados(df_agregado_final, periodo_escolhido, local_exportar)
 
 # Parte da exclusão do arquivo intermediário em .txt
 
 if args.Excluir:
-    print(stylize("\nEXCLUINDO ARQUIVO INTERMEDIÁRIO EM .txt", fg("magenta")))
+    print()
+    print(stylize("EXCLUINDO ARQUIVO INTERMEDIÁRIO EM .txt\n", fg("magenta") + attr("bold")))
     try:
         os.remove(local_salvar + "/CAGEDMOV" + periodo_escolhido + ".txt")
-        print(stylize(f"\nArquivo {local_salvar}/CAGEDMOV{periodo_escolhido}.txt excluído com sucesso.\n\n",
-                      fg("green")))
+        print(stylize("Arquivo " + local_salvar + "\\CAGEDMOV" + periodo_escolhido + ".txt excluído com sucesso.",
+              fg("green") + attr("bold")))
     except Exception as e:
-        print(stylize(f"\nFALHA NA EXCLUSÃO DO ARQUIVO. Erro: {e}\n\n", fg("red")))
+        print(stylize("FALHA NA EXCLUSÃO DO ARQUIVO. Erro: " + str(e), fg("red") + attr("bold")))
 
 if __name__ == "__main__":
     loop_programa()
-    print(stylize("ENCERRANDO O PROGRAMA...PODE DEMORAR UM POUCO.", fg("magenta")))
