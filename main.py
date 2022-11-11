@@ -17,7 +17,7 @@ MESES = {"01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril", "05"
 MESES_INV = dict((v, k) for k, v in MESES.items())
 
 
-@Gooey(dump_build_config=False, clear_before_run=True,
+@Gooey(dump_build_config=False, clear_before_run=True,  # Definição dos parâmetros básicos do programa
        program_name="Utilitário para extração, leitura, tratamento e visualização de"
                     " microdados do NOVO CAGED sobre turismo - LABIMEC",
        language="portuguese", default_size=(1000, 600), image_dir="figs", language_dir="lang",
@@ -38,10 +38,10 @@ MESES_INV = dict((v, k) for k, v in MESES.items())
                               " utilizando conexões FTP e o módulo Gooey para desenvolver a GUI.",
                "version": "2.0",
                "copyright": "2022",
-               "website": " https://www.ufpb.br/labimec",
+               "website": "https://www.ufpb.br/labimec",
                "developer": "Pedro Milreu Cunha - Doutorando e Mestre em Economia"
-                            " Aplicada pelo PPGE/UFPB e \nBacharel em Ciências Econômicas pela UFV"
-                            "\n https://github.com/PedroMilreuCunha",
+                            "Aplicada pelo PPGE/UFPB e \nBacharel em Ciências Econômicas pela UFV"
+                            "\nhttps://github.com/PedroMilreuCunha",
                "license": "Gratuito para uso pessoal."
            }, {
                "type": "MessageDialog",
@@ -221,7 +221,7 @@ if args.Transformar:
     # Parte da plotagem dos gráficos
 
     local_exportar = args.Exportar
-    if args.Exportar and args.Turismo:
+    if args.Exportar and args.Turismo and args.Transformar:
         print()
         print(stylize("CRIANDO E SALVANDO AS SÍNTESES GRÁFICAS DAS INFORMAÇÕES", fg("magenta") + attr("bold")))
         plotar_resultados(df_agregado_final, periodo_escolhido, local_exportar)

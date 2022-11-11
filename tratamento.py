@@ -3,7 +3,6 @@
 import numpy as np
 import pandas as pd
 
-from tqdm import tqdm
 from colored import stylize, fg, attr
 
 # DECLARAÇÃO DE CONSTANTES
@@ -62,6 +61,9 @@ LAZER = (9200301, 9200302, 9200399,
 
 def criar_df_categorias() -> pd.DataFrame:
     """
+    A função é utilizada para gerar o pd.DataFrame com as categorias do turismo
+    a partir das constantes definidas no início do código. Ela retorna um
+    pd.DataFrame chamado df_categorias_turismo.
 
     :rtype df_categorias_turismo: pd.DataFrame
     """
@@ -90,7 +92,17 @@ def criar_df_categorias() -> pd.DataFrame:
 
 def importar_caged(nome_arquivo: str, df_categorias_turismo: pd.DataFrame, turismo: bool) -> pd.DataFrame:
     """
+    Função utilizada para importar o arquivo em .txt com as informações do NOVO
+    CAGED que foi baixado pelo programa. Utiliza quatro parâmetros: nome_arquivo,
+    uma string com o caminho para o arquivo; df_categorias_turismo, o pd.DataFrame
+    criado pela função criar_df_categorias e turismo, uma variável booleana
+    utilizada para definir se a filtragem relacionada ao turismo em João Pessoa
+    deve ser realizada.
 
+    Retorna um pd.DataFrame com os dados do arquivo .txt e, caso turismo==True,
+    realiza as devidas filtragens nele antes de retorná-lo.
+
+    ** Essa função provavelmente será alterada no futuro **
     :rtype df_caged: pd.DataFrame
     :param nome_arquivo: str
     :param df_categorias_turismo: pd.DataFrame
@@ -123,7 +135,13 @@ def importar_caged(nome_arquivo: str, df_categorias_turismo: pd.DataFrame, turis
 
 def recodificar_dummies(dados_caged: pd.DataFrame, turismo: bool) -> pd.DataFrame:
     """
+    Função utilizada para recodificar as variáveis dummies presentes nos dados.
+    Têm dois parâmetros: dados_caged, o pd.DataFrame com as informações do NOVO
+    CAGED e turismo, variável booleana indicando se o usuário optou apenas
+    pelas informações relacionadas ao turismo em João Pessoa.
 
+    Retorna um pd.DataFrame semelhante ao dados_caged, porém com as variáveis
+    devidamente recodificadas.
     :rtype df_recodificado: pd.DataFrame
     :param dados_caged: pd.DataFrame
     :param turismo: bool
@@ -151,18 +169,23 @@ def recodificar_dummies(dados_caged: pd.DataFrame, turismo: bool) -> pd.DataFram
                                                    "Desligamento")
     if turismo:
         df_recodificado = df_recodificado.astype({"Categoria": "category", "graudeinstrução": "category",
-                                                   "raçacor": "category", "sexo": "category",
-                                                   "tipomovimentação": "category"})
+                                                  "raçacor": "category", "sexo": "category",
+                                                  "tipomovimentação": "category"})
     else:
         df_recodificado = df_recodificado.astype({"município": "category", "graudeinstrução": "category",
-                                                   "raçacor": "category", "sexo": "category",
-                                                   "tipomovimentação": "category"})
+                                                  "raçacor": "category", "sexo": "category",
+                                                  "tipomovimentação": "category"})
     return df_recodificado
 
 
 def agregar_resultados(df_recodificado: pd.DataFrame, turismo: bool) -> pd.DataFrame:
     """
+    Utilizada para agregar as informações a partir do pd.DataFrame df_recodificado
+    e da variável booleana turismo, que serve para inferir o tipo correto de
+    agregação a ser feita.
 
+    Retorna um pd.DataFrame com os resultados agregados segundo o ditado
+    pela escolha do usuário.
     :rtype df_agregado: pd.DataFrame
     :param df_recodificado: pd.DataFrame
     :param turismo: bool
@@ -196,7 +219,14 @@ def agregar_resultados(df_recodificado: pd.DataFrame, turismo: bool) -> pd.DataF
 
 def lidar_na(df_agregado: pd.DataFrame, periodo_escolhido: str, turismo: bool) -> pd.DataFrame:
     """
+    Função utilizada para lidar com as informações ausentes nos dados. Recebe um
+    pd.DataFrame com os dados agregados (pd.DataFrame df_agregado), o período
+    escolhido pelo usuário (string periodo_escolhido) e a variável booleana
+    turismo, que serve para decidir os nomes corretos das colunas do
+    pd.DataFrame resultante.
 
+    Retorna um pd.DataFrame com os dados ausentes tratados de acordo com o
+    tipo da variável original.
     :rtype df_agregado_final: pd.DataFrame
     :param df_agregado: pd.DataFrame
     :param periodo_escolhido: str

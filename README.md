@@ -12,7 +12,7 @@ Aplicativo para extração dos microdados do NOVO CAGED (2020-) e análise do se
 
 O programa é dividido em quatro seções:
  
- 1. **Download e extração dos dados**:
+ 1. **Transferência e extração dos dados**:
  
   ![Download e extração dos dados](figs_readme/Extração.png)
  
@@ -93,49 +93,49 @@ e foram agrupadas nas seguintes **categorias**:
  Utilizar essa seção para marcar se os gráficos-síntese dos resultados devem ser elaborados e exportados e escolher a pasta de destino. São eles (todos gráficos de barra), cada um sendo plotado para admissões, desligamentos e todas as movimentações agregadas:
 
 **************************************************************************************************************************************************************
-  1. Salário médio por categoria
+  a. Salário médio por categoria
   
-  2. Salário médio por escolaridade
+  b. Salário médio por escolaridade
   
-  3. Salário médio por raça/cor
+  c. Salário médio por raça/cor
   
-  4. Salário médio por sexo
+  d. Salário médio por sexo
   
-  5. Salário médio por categoria, escolaridade e sexo
+  e. Salário médio por categoria, escolaridade e sexo
   
-  6. Salário médio por categoria, escolaridade e raça/cor
+  f. Salário médio por categoria, escolaridade e raça/cor
   
-  7. Salário médio por categoria, sexo e raça/cor
+  g. Salário médio por categoria, sexo e raça/cor
   
-  8. Saldo de movimentações por categoria
+  h. Saldo de movimentações por categoria
   
-  9. Saldo de movimentações por escolaridade
+  i. Saldo de movimentações por escolaridade
   
-  10. Saldo de movimentações por raça/cor
+  j. Saldo de movimentações por raça/cor
   
-  11. Saldo de movimentações por sexo
+  k. Saldo de movimentações por sexo
   
-  12. Saldo de movimentações por categoria, escolaridade e sexo
+  l. Saldo de movimentações por categoria, escolaridade e sexo
   
-  13. Saldo de movimentações por categoria, escolaridade e raça/cor
+  m. Saldo de movimentações por categoria, escolaridade e raça/cor
   
-  14. Saldo de movimentações por categoria, sexo e raça/cor
+  n. Saldo de movimentações por categoria, sexo e raça/cor
 
 
-**IMPORTANTE: DISPONÍVEL APENAS PARA OS DADOS DO TURISMO DE JOÃO PESSOA**, ou seja, para que essa opção funcione é necessário que se escolha "Sim" na opção de analisar especificamente o turismo em João Pessoa e que se forneça a pasta destino das exportações.
+**IMPORTANTE: DISPONÍVEL APENAS PARA OS DADOS DO TURISMO DE JOÃO PESSOA**, ou seja, para que essa opção funcione deve se escolher "Sim" na opção de analisar especificamente o turismo em João Pessoa e que se forneça a pasta destino das exportações.
 
 **************************************************************************************************************************************************************
 Exemplos dos resultados:
 
-  1. Admissões:
+  a. Admissões:
   
   ![](figs_readme/ex_admissão.svg)
   
-  2. Desligamentos:
+  b. Desligamentos:
   
   ![](figs_readme/ex_desligamento.svg)
   
-  3. Saldo:
+  c. Saldo:
   
   ![](figs_readme/ex_ambos.svg)
 
@@ -151,13 +151,13 @@ Exemplos dos resultados:
 
 **Dependências**
 
-Assumindo que o interpretador de Python já esteja instalado em seu computador, utilize o comando `pip install -r requirements.txt` para instalar as dependências necessárias para o funcionamento do programa.
+Assumindo que o interpretador de Python já esteja instalado no seu computador (**_recomendo fortemente_ que o programa seja compilado com a versão 3.10 da linguagem Python**), utilize o comando `pip install -r requirements.txt` para instalar as dependências necessárias para o funcionamento do programa.
 
 **************************************************************************************************************************************************************
 
 **Atualizações**
 
-Possíveis novas funcionalidades do programa pode ser encontradas no arquivo `TODO.md`. Fiquem à vontade para contribuir!
+Possíveis novas funcionalidades do programa podem ser encontradas no arquivo `TODO.md`. Fiquem à vontade para contribuir!
 
 **************************************************************************************************************************************************************
 
@@ -171,7 +171,7 @@ O Laboratório de Inteligência Artificial e Macroeconomia Computacional ([LABIM
 
 Para sugestões, críticas, elogios ou dúvidas entrar em contato com o desenvolvedor:
 
-_Pedro Milreu Cunha - Doutorando em Economia Aplicada pelo PPGE-UFPB e pesquisador do LABIMEC - [github](https://github.com/PedroMilreuCunha)_
+_Pedro Milreu Cunha — Doutorando em Economia Aplicada pelo PPGE-UFPB e pesquisador do LABIMEC — [github](https://github.com/PedroMilreuCunha)_
     
 através do e-mail pcunha.2107@gmail.com.
 

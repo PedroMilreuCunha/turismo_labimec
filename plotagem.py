@@ -23,11 +23,18 @@ plt.rcParams["font.serif"] = ["DejaVu Sans"]
 
 def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -> None:
     """
+    Função utilizada para gerar as sínteses gráficas do resultado. Utiliza três
+    parâmetros para isso: dados, um pd.DataFrame com as informações a serem
+    plotadas; periodo_escolhido, uma string utilizada para nomear os arquivos
+    e local, outra string que representa o caminho para o local onde as
+    figuras serão salvas.
 
+    A função não retorna nada, sendo só um 'wrapper' conveniente para automatizar
+    o processo de geração das figuras.
 
-    :type dados: pd.DataFrame
-    :type periodo_escolhido: str
-    :type local: str
+    :param dados: pd.DataFrame
+    :param periodo_escolhido: str
+    :param local: str
     """
     m = ['Admissões', 'Desligamentos', 'Admissões e desligamentos']
     d1 = dados.query("`Movimentação` == 'Admissão'").reset_index()
@@ -45,6 +52,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             if not os.path.isdir(local + "/" + periodo_escolhido + " - " + m[i]):
                 os.mkdir(local + "/" + periodo_escolhido + " - " + m[i])
 
+            # Salário médio por categoria
             t = temp[i].groupby("Categoria").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                                                     "Saldo de movimentações": (
                                                         "Saldo de movimentações", "sum")}).reset_index()
@@ -66,6 +74,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Salário médio por escolaridade
             t = temp[i].groupby("Escolaridade").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                                                        "Saldo de movimentações": (
                                                            "Saldo de movimentações", "sum")}).reset_index()
@@ -85,6 +94,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Salário médio por sexo
             t = temp[i].groupby("Sexo").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                                                "Saldo de movimentações": (
                                                    "Saldo de movimentações", "sum")}).reset_index()
@@ -104,6 +114,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Salário médio por raça/cor
             t = (
                 temp[i].groupby("Raça/Cor")
                 .agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
@@ -127,6 +138,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Salário médio por categoria, escolaridade e sexo
             t = temp[i].groupby(["Categoria", "Escolaridade", "Sexo"]).agg(
                 **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                    "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
@@ -150,6 +162,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Salário médio por categoria, escolaridade e raça/cor
             t = temp[i].groupby(["Categoria", "Escolaridade", "Raça/Cor"]).agg(
                 **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                    "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
@@ -173,6 +186,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Salário médio por categoria, sexo e raça/cor
             t = temp[i].groupby(["Categoria", "Sexo", "Raça/Cor"]).agg(
                 **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                    "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
@@ -194,6 +208,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Saldo de movimentações por categoria
             t = temp[i].groupby("Categoria").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                                                     "Saldo de movimentações": (
                                                         "Saldo de movimentações", "sum")}).reset_index()
@@ -214,6 +229,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Saldo de movimentações por escolaridade
             t = temp[i].groupby("Escolaridade").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                                                        "Saldo de movimentações": (
                                                            "Saldo de movimentações", "sum")}).reset_index()
@@ -234,6 +250,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Saldo de movimentações por sexo
             t = temp[i].groupby("Sexo").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                                                "Saldo de movimentações": (
                                                    "Saldo de movimentações", "sum")}).reset_index()
@@ -254,6 +271,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Saldo de movimentações por raça/cor
             t = temp[i].groupby("Raça/Cor").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                                                    "Saldo de movimentações": (
                                                        "Saldo de movimentações", "sum")}).reset_index()
@@ -274,6 +292,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Saldo de movimentações por categoria, escolaridade e sexo
             t = temp[i].groupby(["Categoria", "Escolaridade", "Sexo"]).agg(
                 **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                    "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
@@ -297,6 +316,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Saldo de movimentações por categoria, escolaridade e raça/cor
             t = temp[i].groupby(["Categoria", "Escolaridade", "Raça/Cor"]).agg(
                 **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                    "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
@@ -320,6 +340,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             pbar.update(1)
             print(stylize(pbar, fg("dark_blue")), flush=True)
 
+            # Saldo de movimentações por categoria, sexo e raça/cor
             t = temp[i].groupby(["Categoria", "Sexo", "Raça/Cor"]).agg(
                 **{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
                    "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
