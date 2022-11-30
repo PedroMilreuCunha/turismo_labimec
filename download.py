@@ -108,7 +108,7 @@ def baixar_arquivo(periodo_escolhido: str, diretorio_download: str, nome_arquivo
         n += 1
         pbar.update(len(dados))
         if n % 70 == 0:
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
     try:
         ftp.retrbinary("RETR " + nome_arquivo,

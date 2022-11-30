@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore")
 # Parâmetros gráficos
 sns.set(style="white")
 plt.rcParams["figure.dpi"] = 300
-plt.rcParams["figure.figsize"] = [10, 8]
+plt.rcParams["figure.figsize"] = [15, 12]
 plt.rcParams["figure.autolayout"] = True
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["font.serif"] = ["DejaVu Sans"]
@@ -61,18 +61,18 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             ax = g1.facet_axis(0, 0)
             for c in ax.containers:
                 labels = [f"{(v.get_width()):.0f}" for v in c]
-                ax.bar_label(c, labels=labels, label_type='edge')
+                ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
             plt.xlabel("Salário médio (R$)", size=14)
-            plt.xlim((0, 2300))
+            plt.xlim(0, max(t['Salário médio (R$)']) + 300)
             plt.tick_params(axis="both", which="major", labelsize=14)
             plt.minorticks_off()
             g1.set(ylabel=None)
             sns.despine()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_categoria" +
-                        ".svg", pad_inches=0.05, bbox_inches="tight")
+                        ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Salário médio por escolaridade
             t = temp[i].groupby("Escolaridade").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
@@ -83,16 +83,17 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             ax = g2.facet_axis(0, 0)
             for c in ax.containers:
                 labels = [f"{(v.get_width()):.0f}" for v in c]
-                ax.bar_label(c, labels=labels, label_type='edge')
+                ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
             g2.set(ylabel=None)
             sns.despine()
             plt.xlabel("Salário médio (R$)", size=14)
+            plt.xlim(0, max(t['Salário médio (R$)']) + 300)
             plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_escolaridade" +
-                        ".svg", pad_inches=0.05, bbox_inches="tight")
+                        ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Salário médio por sexo
             t = temp[i].groupby("Sexo").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
@@ -103,16 +104,17 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             ax = g3.facet_axis(0, 0)
             for c in ax.containers:
                 labels = [f"{(v.get_width()):.0f}" for v in c]
-                ax.bar_label(c, labels=labels, label_type='edge')
+                ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
             g3.set(ylabel=None)
             sns.despine()
             plt.xlabel("Salário médio (R$)", size=14)
+            plt.xlim(0, max(t['Salário médio (R$)']) + 300)
             plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_sexo" +
-                        ".svg", pad_inches=0.05, bbox_inches="tight")
+                        ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Salário médio por raça/cor
             t = (
@@ -126,17 +128,18 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             ax = g4.facet_axis(0, 0)
             for c in ax.containers:
                 labels = [f"{(v.get_width()):.0f}" for v in c]
-                ax.bar_label(c, labels=labels, label_type='edge')
+                ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
             g4.set(ylabel=None)
             sns.despine()
             plt.margins(x=0.2)
             plt.xlabel("Salário médio (R$)", size=14)
+            plt.xlim(0, max(t['Salário médio (R$)']) + 300)
             plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_raca" +
-                        ".svg", pad_inches=0.05, bbox_inches="tight")
+                        ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Salário médio por categoria, escolaridade e sexo
             t = temp[i].groupby(["Categoria", "Escolaridade", "Sexo"]).agg(
@@ -157,10 +160,10 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             plt.minorticks_off()
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_categoria_escolaridade_sexo" +
-                ".svg", pad_inches=0.05, bbox_inches="tight")
+                ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Salário médio por categoria, escolaridade e raça/cor
             t = temp[i].groupby(["Categoria", "Escolaridade", "Raça/Cor"]).agg(
@@ -168,7 +171,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
                    "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
             with sns.plotting_context(font_scale=2.25):
                 g6 = sns.catplot(data=t, x="Salário médio (R$)", y="Categoria", palette=paletas[i],
-                                 col="Escolaridade", row="Raça/Cor", kind="bar", errorbar=None, aspect=1.4,
+                                 row="Escolaridade", col="Raça/Cor", kind="bar", errorbar=None, aspect=1.4,
                                  margin_titles=True,
                                  sharex=False, sharey=True, facet_kws={"despine": True})
                 for ax in g6.axes.ravel():
@@ -181,10 +184,10 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             plt.minorticks_off()
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_categoria_escolaridade_raca" +
-                ".svg", pad_inches=0.05, bbox_inches="tight")
+                ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Salário médio por categoria, sexo e raça/cor
             t = temp[i].groupby(["Categoria", "Sexo", "Raça/Cor"]).agg(
@@ -203,10 +206,10 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
                 sns.despine()
             plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_categoria_sexo_raca" +
-                        ".svg", pad_inches=0.05, bbox_inches="tight")
+                        ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Saldo de movimentações por categoria
             t = temp[i].groupby("Categoria").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
@@ -217,17 +220,18 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             ax = g8.facet_axis(0, 0)
             for c in ax.containers:
                 labels = [f"{(v.get_width()):.0f}" for v in c]
-                ax.bar_label(c, labels=labels, label_type='edge')
-            plt.xlabel("Saldo de movimentações", size=12)
+                ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
+            plt.xlabel("Saldo de movimentações", size=14)
+            plt.xlim(min(t['Saldo de movimentações']) - 20, max(t['Saldo de movimentações']) + 20)
             plt.tick_params(axis="both", which="major", labelsize=12)
             g8.set(ylabel=None)
             sns.despine()
             plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_categoria" +
-                        ".svg", pad_inches=0.05, bbox_inches="tight")
+                        ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Saldo de movimentações por escolaridade
             t = temp[i].groupby("Escolaridade").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
@@ -238,17 +242,18 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             ax = g9.facet_axis(0, 0)
             for c in ax.containers:
                 labels = [f"{(v.get_width()):.0f}" for v in c]
-                ax.bar_label(c, labels=labels, label_type='edge')
+                ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
             g9.set(ylabel=None)
             sns.despine()
             plt.xlabel("Saldo de movimentações", size=14)
+            plt.xlim(min(t['Saldo de movimentações']) - 20, max(t['Saldo de movimentações']) + 20)
             plt.margins(x=0.2)
             plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_escolaridade" +
-                        ".svg", pad_inches=0.05, bbox_inches="tight")
+                        ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Saldo de movimentações por sexo
             t = temp[i].groupby("Sexo").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
@@ -259,17 +264,18 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             ax = g10.facet_axis(0, 0)
             for c in ax.containers:
                 labels = [f"{(v.get_width()):.0f}" for v in c]
-                ax.bar_label(c, labels=labels, label_type='edge')
+                ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
             g10.set(ylabel=None)
             sns.despine()
             plt.xlabel("Saldo de movimentações", size=14)
+            plt.xlim(min(t['Saldo de movimentações']) - 20, max(t['Saldo de movimentações']) + 20)
             plt.margins(x=0.2)
             plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_sexo" +
-                        ".svg", pad_inches=0.05, bbox_inches="tight")
+                        ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Saldo de movimentações por raça/cor
             t = temp[i].groupby("Raça/Cor").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
@@ -280,17 +286,18 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             ax = g11.facet_axis(0, 0)
             for c in ax.containers:
                 labels = [f"{(v.get_width()):.0f}" for v in c]
-                ax.bar_label(c, labels=labels, label_type='edge')
+                ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
             g11.set(ylabel=None)
             sns.despine()
             plt.margins(x=0.2)
             plt.xlabel("Saldo de movimentações", size=14)
+            plt.xlim(min(t['Saldo de movimentações']) - 20, max(t['Saldo de movimentações']) + 20)
             plt.minorticks_off()
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_raca" +
-                        ".svg", pad_inches=0.05, bbox_inches="tight")
+                        ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Saldo de movimentações por categoria, escolaridade e sexo
             t = temp[i].groupby(["Categoria", "Escolaridade", "Sexo"]).agg(
@@ -311,10 +318,10 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[
                     i] + "/saldo_movimentacoes_por_categoria_escolaridade_sexo" +
-                ".svg", pad_inches=0.05, bbox_inches="tight")
+                ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Saldo de movimentações por categoria, escolaridade e raça/cor
             t = temp[i].groupby(["Categoria", "Escolaridade", "Raça/Cor"]).agg(
@@ -322,7 +329,7 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
                    "Saldo de movimentações": ("Saldo de movimentações", "sum")}).reset_index()
             with sns.plotting_context(font_scale=2.25):
                 g13 = sns.catplot(data=t, x="Saldo de movimentações", y="Categoria", palette=paletas[i],
-                                  col="Escolaridade", row="Raça/Cor", kind="bar", errorbar=None, aspect=1.4,
+                                  row="Escolaridade", col="Raça/Cor", kind="bar", errorbar=None, aspect=1.4,
                                   margin_titles=True,
                                   sharex=False, sharey=True, facet_kws={"despine": True})
                 for ax in g13.axes.ravel():
@@ -335,10 +342,10 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[
                     i] + "/saldo_movimentacoes_por_categoria_escolaridade_raca" +
-                ".svg", pad_inches=0.05, bbox_inches="tight")
+                ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
 
             # Saldo de movimentações por categoria, sexo e raça/cor
             t = temp[i].groupby(["Categoria", "Sexo", "Raça/Cor"]).agg(
@@ -357,10 +364,10 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
             plt.minorticks_off()
             plt.savefig(
                 local + "/" + periodo_escolhido + " - " + m[i] + "/saldo_movimentacoes_por_categoria_sexo_raca" +
-                ".svg", pad_inches=0.05, bbox_inches="tight")
+                ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()
             pbar.update(1)
-            print(stylize(pbar, fg("dark_blue")), flush=True)
+            print(stylize(pbar, fg("light_blue")), flush=True)
         except Exception as e:
             print(stylize("ERRO DURANTE A CRIAÇÃO/EXPORTAÇÃO DAS FIGURAS: " + str(e), fg("red") + attr("bold")))
         pbar.close()
