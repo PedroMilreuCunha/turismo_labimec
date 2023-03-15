@@ -1,5 +1,5 @@
 # **Lista de itens a serem melhorados no programa**
 
-_1. Tornar o programa exclusivo para as funções relacionadas ao turismo em João Pessoa._
+_1. Expandir as opções de personalização_;
 
-_2. Separar e liberar uma versão pública com funções apropriadas para usos genéricos._
+_2. Modificar a função de plotagem para gerar gráficos conjuntos de admissões, demissões e saldo_;
