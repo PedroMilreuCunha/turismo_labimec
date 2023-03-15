@@ -10,12 +10,12 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Parâmetros gráficos
-sns.set(style="white")
-plt.rcParams["figure.dpi"] = 300
+sns.set(style="white", font_scale = 1.4)
+plt.rcParams["figure.dpi"] = 600
 plt.rcParams["figure.figsize"] = [15, 12]
 plt.rcParams["figure.autolayout"] = True
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["font.serif"] = ["DejaVu Sans"]
+plt.rcParams["font.family"] = "sans-serif"
+plt.rcParams["font.serif"] = ["Tahoma"]
 
 
 # Funções
@@ -51,23 +51,28 @@ def plotar_resultados(dados: pd.DataFrame, periodo_escolhido: str, local: str) -
         try:
             if not os.path.isdir(local + "/" + periodo_escolhido + " - " + m[i]):
                 os.mkdir(local + "/" + periodo_escolhido + " - " + m[i])
+                t = temp[i].groupby("Categoria").agg(
+                    **{
+                        "Salário médio (R$)": ("Salário médio (R$)", "mean"),
+                        "Saldo de movimentações": ("Saldo de movimentações", "sum")
+                    }
+                ).reset_index()
 
-            # Salário médio por categoria
-            t = temp[i].groupby("Categoria").agg(**{"Salário médio (R$)": ("Salário médio (R$)", "mean"),
-                                                    "Saldo de movimentações": (
-                                                        "Saldo de movimentações", "sum")}).reset_index()
-            g1 = sns.catplot(data=t, x="Salário médio (R$)", y="Categoria", palette=paletas[i], kind='bar',
-                             aspect=1.4)
-            ax = g1.facet_axis(0, 0)
-            for c in ax.containers:
-                labels = [f"{(v.get_width()):.0f}" for v in c]
-                ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
-            plt.xlabel("Salário médio (R$)", size=14)
-            plt.xlim(0, max(t['Salário médio (R$)']) + 300)
-            plt.tick_params(axis="both", which="major", labelsize=14)
-            plt.minorticks_off()
-            g1.set(ylabel=None)
-            sns.despine()
+                g1 = sns.catplot(
+                    data=t, x="Salário médio (R$)", y="Categoria", palette=paletas[i], kind='bar', aspect=1.4
+                )
+                ax = g1.facet_axis(0, 0)
+                for c in ax.containers:
+                    labels = [f"{(v.get_width()):.0f}" for v in c]
+                    ax.bar_label(c, labels=labels, label_type='edge', padding=0.075)
+                plt.xlabel('Salário médio (R$)',
+                           fontsize = 14)
+                plt.xlim(0, max(t['Salário médio (R$)']) + 300)
+                plt.tick_params(axis="both", which="major", labelsize=14)
+                plt.minorticks_off()
+                g1.set(ylabel=None)
+                sns.despine()
+
             plt.savefig(local + "/" + periodo_escolhido + " - " + m[i] + "/salario_medio_por_categoria" +
                         ".svg", pad_inches=0.15, bbox_inches="tight")
             plt.close()

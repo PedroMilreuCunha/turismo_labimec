@@ -31,7 +31,7 @@ def obter_diretorios_caged() -> list:
     ftp.login()
     ano_corrente = date.today().year
     arquivos_disponiveis = []
-    for ano in range(2020, ano_corrente):
+    for ano in range(2020, ano_corrente+1):
         ftp.cwd("/pdet/microdados/NOVO CAGED/" + str(ano))
         for arq in ftp.nlst():
             arquivos_disponiveis.append(arq)

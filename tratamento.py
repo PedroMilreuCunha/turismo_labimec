@@ -191,7 +191,6 @@ def agregar_resultados(df_recodificado: pd.DataFrame, turismo: bool) -> pd.DataF
     :param turismo: bool
     """
     if turismo:
-        print(f"\nAgrupando os dados por categoria do turismo, tipo de movimentação, escolaridade, raça/cor e sexo")
         dados_agrupados = (
             df_recodificado
             .groupby(["Categoria", "tipomovimentação", "graudeinstrução", "raçacor", "sexo"], dropna=False)
